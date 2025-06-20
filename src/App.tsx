@@ -185,20 +185,7 @@ function App() {
             </Button>
           </div>
           
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-cyan-400">50K+</div>
-              <div className="text-sm text-gray-400">Students Learning</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-emerald-400">95%</div>
-              <div className="text-sm text-gray-400">Success Rate</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-400">24/7</div>
-              <div className="text-sm text-gray-400">AI Support</div>
-            </div>
-          </div>
+
         </div>
       </section>
 
@@ -487,25 +474,7 @@ function App() {
             </Card>
           </div>
 
-          {/* Community Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            <div className="text-center p-6 bg-gradient-to-br from-emerald-900/30 to-green-900/30 rounded-2xl border border-emerald-500/20">
-              <div className="text-3xl font-bold text-emerald-400 mb-2">50K+</div>
-              <div className="text-gray-400">Active Learners</div>
-            </div>
-            <div className="text-center p-6 bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-2xl border border-purple-500/20">
-              <div className="text-3xl font-bold text-purple-400 mb-2">1M+</div>
-              <div className="text-gray-400">Code Generated</div>
-            </div>
-            <div className="text-center p-6 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 rounded-2xl border border-cyan-500/20">
-              <div className="text-3xl font-bold text-cyan-400 mb-2">95%</div>
-              <div className="text-gray-400">Success Rate</div>
-            </div>
-            <div className="text-center p-6 bg-gradient-to-br from-amber-900/30 to-orange-900/30 rounded-2xl border border-amber-500/20">
-              <div className="text-3xl font-bold text-amber-400 mb-2">24/7</div>
-              <div className="text-gray-400">AI Support</div>
-            </div>
-          </div>
+
         </div>
       </section>
 
@@ -655,11 +624,7 @@ function App() {
               <p className="text-gray-400 text-sm mb-4 md:mb-0">
                 &copy; 2024 AI Code Academy. All rights reserved. Built with ❤️ and AI.
               </p>
-              <div className="flex items-center space-x-6 text-sm text-gray-400">
-                <a href="#" className="hover:text-cyan-400 transition-colors duration-300">Terms of Service</a>
-                <a href="#" className="hover:text-purple-400 transition-colors duration-300">Privacy Policy</a>
-                <a href="#" className="hover:text-emerald-400 transition-colors duration-300">Cookie Policy</a>
-              </div>
+
             </div>
           </div>
         </div>
