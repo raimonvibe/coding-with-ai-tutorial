@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Brain, Code, Zap, CheckCircle, Menu, X, Play, BookOpen, Target, Users, Sparkles, Rocket, Star } from 'lucide-react'
+import { Brain, Code, Zap, CheckCircle, Menu, X, Play, BookOpen, Target, Sparkles, Rocket, Star } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
 import { Badge } from './components/ui/badge'
@@ -105,7 +105,6 @@ function App() {
             <div className="hidden md:flex items-center space-x-8">
               <a href="#tutorials" className="text-gray-300 hover:text-cyan-400 transition-all duration-300 hover:scale-105">Tutorials</a>
               <a href="#progress" className="text-gray-300 hover:text-emerald-400 transition-all duration-300 hover:scale-105">Progress</a>
-              <a href="#community" className="text-gray-300 hover:text-purple-400 transition-all duration-300 hover:scale-105">Community</a>
               <Button variant="outline" className="border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 hover:shadow-lg hover:shadow-cyan-400/25 transition-all duration-300">
                 <Rocket className="mr-2 h-4 w-4" />
                 Get Started
@@ -131,7 +130,6 @@ function App() {
             <div className="px-4 pt-4 pb-6 space-y-3">
               <a href="#tutorials" className="block px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10 rounded-lg transition-all duration-300">Tutorials</a>
               <a href="#progress" className="block px-4 py-3 text-gray-300 hover:text-emerald-400 hover:bg-emerald-400/10 rounded-lg transition-all duration-300">Progress</a>
-              <a href="#community" className="block px-4 py-3 text-gray-300 hover:text-purple-400 hover:bg-purple-400/10 rounded-lg transition-all duration-300">Community</a>
               <Button variant="outline" className="w-full mt-4 border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 hover:shadow-lg hover:shadow-cyan-400/25 transition-all duration-300">
                 <Rocket className="mr-2 h-4 w-4" />
                 Get Started
@@ -404,86 +402,14 @@ function App() {
         </div>
       </section>
 
-      {/* Community Section */}
-      <section id="community" className="py-20 px-4 bg-gradient-to-b from-slate-800/50 to-slate-900/50">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent">
-              Join Our Learning Community
-            </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Connect with thousands of developers mastering AI programming together
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <Card className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border-2 border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 group">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center justify-center text-2xl mb-4">
-                  <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 mr-4">
-                    <Users className="h-8 w-8 text-purple-400" />
-                  </div>
-                  <span className="group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 group-hover:bg-clip-text transition-all duration-300">
-                    Connect with Fellow Learners
-                  </span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-                  Join thousands of developers learning to code with AI. Share your progress, get help, and collaborate on projects in real-time.
-                </p>
-                <div className="flex flex-col gap-4">
-                  <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-105 text-lg py-3">
-                    <Users className="mr-3 h-5 w-5" />
-                    Join Learning Hub
-                  </Button>
-                  <Button variant="outline" className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 text-lg py-3">
-                    <BookOpen className="mr-3 h-5 w-5" />
-                    Browse Projects
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
 
-            <Card className="bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border-2 border-cyan-500/30 hover:border-cyan-400/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20 group">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center justify-center text-2xl mb-4">
-                  <div className="p-4 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 mr-4">
-                    <Rocket className="h-8 w-8 text-cyan-400" />
-                  </div>
-                  <span className="group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-400 group-hover:bg-clip-text transition-all duration-300">
-                    Showcase Your Skills
-                  </span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-                  Share your AI-powered projects, get feedback from experts, and inspire others with your coding journey and achievements.
-                </p>
-                <div className="flex flex-col gap-4">
-                  <Button className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/40 transition-all duration-300 transform hover:scale-105 text-lg py-3">
-                    <Rocket className="mr-3 h-5 w-5" />
-                    Share Your Project
-                  </Button>
-                  <Button variant="outline" className="border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-white hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 text-lg py-3">
-                    <Star className="mr-3 h-5 w-5" />
-                    Get Certified
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="bg-gradient-to-b from-slate-900 to-black border-t border-purple-500/20 py-16 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-3 mb-6">
+          <div className="mb-12">
+            <div className="text-center">
+              <div className="flex items-center justify-center space-x-3 mb-6">
                 <div className="relative">
                   <Brain className="h-8 w-8 text-cyan-400" />
                   <Sparkles className="h-3 w-3 text-yellow-400 absolute -top-1 -right-1 animate-pulse" />
@@ -492,63 +418,15 @@ function App() {
                   AI Code Academy
                 </span>
               </div>
-              <p className="text-gray-300 text-lg leading-relaxed mb-6 max-w-md">
+              <p className="text-gray-300 text-lg leading-relaxed mb-6 max-w-2xl mx-auto">
                 Empowering the next generation of developers to code smarter, faster, and more efficiently with cutting-edge AI assistance.
               </p>
-              <div className="flex space-x-4">
-                <Button variant="outline" size="sm" className="border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 transition-all duration-300">
-                  <Users className="h-4 w-4 mr-2" />
-                  Community
-                </Button>
+              <div className="flex justify-center">
                 <Button variant="outline" size="sm" className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-slate-900 transition-all duration-300">
                   <Code className="h-4 w-4 mr-2" />
                   GitHub
                 </Button>
               </div>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-xl mb-6 text-emerald-400">Tutorials</h3>
-              <ul className="space-y-3 text-gray-400">
-                <li><a href="#" className="hover:text-emerald-400 transition-colors duration-300 flex items-center">
-                  <span className="w-2 h-2 bg-emerald-400 rounded-full mr-3 opacity-0 hover:opacity-100 transition-opacity"></span>
-                  Getting Started
-                </a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors duration-300 flex items-center">
-                  <span className="w-2 h-2 bg-emerald-400 rounded-full mr-3 opacity-0 hover:opacity-100 transition-opacity"></span>
-                  Advanced Topics
-                </a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors duration-300 flex items-center">
-                  <span className="w-2 h-2 bg-emerald-400 rounded-full mr-3 opacity-0 hover:opacity-100 transition-opacity"></span>
-                  Best Practices
-                </a></li>
-                <li><a href="#" className="hover:text-emerald-400 transition-colors duration-300 flex items-center">
-                  <span className="w-2 h-2 bg-emerald-400 rounded-full mr-3 opacity-0 hover:opacity-100 transition-opacity"></span>
-                  AI Ethics
-                </a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-xl mb-6 text-purple-400">Resources</h3>
-              <ul className="space-y-3 text-gray-400">
-                <li><a href="#" className="hover:text-purple-400 transition-colors duration-300 flex items-center">
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 opacity-0 hover:opacity-100 transition-opacity"></span>
-                  Help Center
-                </a></li>
-                <li><a href="#" className="hover:text-purple-400 transition-colors duration-300 flex items-center">
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 opacity-0 hover:opacity-100 transition-opacity"></span>
-                  API Documentation
-                </a></li>
-                <li><a href="#" className="hover:text-purple-400 transition-colors duration-300 flex items-center">
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 opacity-0 hover:opacity-100 transition-opacity"></span>
-                  Contact Support
-                </a></li>
-                <li><a href="#" className="hover:text-purple-400 transition-colors duration-300 flex items-center">
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-3 opacity-0 hover:opacity-100 transition-opacity"></span>
-                  Privacy Policy
-                </a></li>
-              </ul>
             </div>
           </div>
           
