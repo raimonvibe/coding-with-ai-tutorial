@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Brain, Code, Zap, Menu, X, Play, BookOpen, Target, Sparkles, Rocket, Star } from 'lucide-react'
+import { Brain, Code, Zap, Menu, X, BookOpen, Sparkles, Star } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
 import { Badge } from './components/ui/badge'
-import { Progress } from './components/ui/progress'
+
 import './App.css'
 
 function App() {
@@ -76,7 +76,7 @@ function App() {
 
 
 
-  const progressPercentage = 0
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/10 to-slate-900 text-white">
@@ -96,11 +96,6 @@ function App() {
             
             <div className="hidden md:flex items-center space-x-8">
               <a href="#tutorials" className="text-gray-300 hover:text-cyan-400 transition-all duration-300 hover:scale-105">Tutorials</a>
-              <a href="#progress" className="text-gray-300 hover:text-emerald-400 transition-all duration-300 hover:scale-105">Progress</a>
-              <Button variant="outline" className="border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 hover:shadow-lg hover:shadow-cyan-400/25 transition-all duration-300">
-                <Rocket className="mr-2 h-4 w-4" />
-                Get Started
-              </Button>
             </div>
 
             <div className="md:hidden">
@@ -121,11 +116,6 @@ function App() {
           <div className="md:hidden bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-sm border-t border-purple-500/20">
             <div className="px-4 pt-4 pb-6 space-y-3">
               <a href="#tutorials" className="block px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10 rounded-lg transition-all duration-300">Tutorials</a>
-              <a href="#progress" className="block px-4 py-3 text-gray-300 hover:text-emerald-400 hover:bg-emerald-400/10 rounded-lg transition-all duration-300">Progress</a>
-              <Button variant="outline" className="w-full mt-4 border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 hover:shadow-lg hover:shadow-cyan-400/25 transition-all duration-300">
-                <Rocket className="mr-2 h-4 w-4" />
-                Get Started
-              </Button>
             </div>
           </div>
         )}
@@ -165,10 +155,6 @@ function App() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button size="lg" className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/40 transition-all duration-300 transform hover:scale-105 px-8 py-4 text-lg">
-              <Play className="mr-3 h-6 w-6" />
-              Get Started
-            </Button>
             <Button size="lg" variant="outline" className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105 px-8 py-4 text-lg">
               <BookOpen className="mr-3 h-6 w-6" />
               View Tips
@@ -211,74 +197,6 @@ function App() {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Progress Section */}
-      <section id="progress" className="py-20 px-4 bg-gradient-to-b from-slate-800/50 to-slate-900/50">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
-              Your Learning Progress
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Track your journey to becoming an AI-powered developer
-            </p>
-          </div>
-          
-          <Card className="bg-gradient-to-br from-slate-800/80 to-slate-700/80 border-2 border-emerald-500/30 shadow-2xl shadow-emerald-500/10 mb-8 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center text-2xl">
-                <div className="p-3 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 mr-4">
-                  <Target className="h-8 w-8 text-emerald-400" />
-                </div>
-                <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                  Overall Progress
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-300 text-lg">Completed Lessons</span>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-2xl font-bold text-emerald-400">0</span>
-                    <span className="text-gray-400">/</span>
-                    <span className="text-xl text-gray-300">{lessons.length}</span>
-                  </div>
-                </div>
-                
-                <div className="relative">
-                  <Progress 
-                    value={progressPercentage} 
-                    className="h-4 bg-slate-700 rounded-full overflow-hidden"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full opacity-20 animate-pulse"></div>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-                  <div className="text-center p-4 bg-gradient-to-br from-emerald-900/30 to-cyan-900/30 rounded-xl border border-emerald-500/20">
-                    <div className="text-2xl font-bold text-emerald-400">{Math.round(progressPercentage)}%</div>
-                    <div className="text-sm text-gray-400">Complete</div>
-                  </div>
-                  <div className="text-center p-4 bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/20">
-                    <div className="text-2xl font-bold text-purple-400">{lessons.length}</div>
-                    <div className="text-sm text-gray-400">Remaining</div>
-                  </div>
-                  <div className="text-center p-4 bg-gradient-to-br from-amber-900/30 to-orange-900/30 rounded-xl border border-amber-500/20">
-                    <div className="text-2xl font-bold text-amber-400">
-                      0
-                    </div>
-                    <div className="text-sm text-gray-400">Score</div>
-                  </div>
-                </div>
-                
-                <div className="text-center mt-6">
-                  <p className="text-gray-400">Keep learning to unlock your full potential!</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </section>
 
