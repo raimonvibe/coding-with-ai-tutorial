@@ -16,12 +16,15 @@ function App() {
   const [lessonDialogOpen, setLessonDialogOpen] = useState(false)
   const [lesson2DialogOpen, setLesson2DialogOpen] = useState(false)
   const [lesson3DialogOpen, setLesson3DialogOpen] = useState(false)
+  const [lesson4DialogOpen, setLesson4DialogOpen] = useState(false)
   const [userSolution, setUserSolution] = useState('')
   const [userHtmlSolution, setUserHtmlSolution] = useState('')
   const [userScreenshotSolution, setUserScreenshotSolution] = useState('')
+  const [userNavigationSolution, setUserNavigationSolution] = useState('')
   const [feedback, setFeedback] = useState('')
   const [htmlFeedback, setHtmlFeedback] = useState('')
   const [screenshotFeedback, setScreenshotFeedback] = useState('')
+  const [navigationFeedback, setNavigationFeedback] = useState('')
   const [completedLessons, setCompletedLessons] = useState<number[]>([])
 
   const lessons = [
@@ -159,6 +162,28 @@ function App() {
     ]
   }
 
+  const navigationExample = {
+    title: "Lost in Google Cloud Console - Getting AI Navigation Help",
+    scenario: "You're trying to set up a new Cloud Function but can't find the right menu in the Google Cloud Console.",
+    currentView: "You see: Navigation menu (☰), Dashboard widgets showing 'Compute Engine', 'Cloud Storage', Project selector showing 'my-web-app-2024', and a search bar at the top.",
+    goal: "Navigate to Cloud Functions to create a new function",
+    goodPromptExample: "I'm in Google Cloud Console dashboard for project 'my-web-app-2024'. I can see the navigation menu, dashboard widgets for Compute Engine and Cloud Storage, and a search bar. I need to create a new Cloud Function but can't find where to go. What should I click next?",
+    badExamples: [
+      "How do I make a function?",
+      "Where is Cloud Functions?", 
+      "I'm lost, help!",
+      "Cloud Functions not working"
+    ],
+    steps: [
+      "1. Describe your current location in the interface clearly",
+      "2. Mention what you can see (menus, buttons, project name, etc.)",
+      "3. State your specific goal (what you're trying to accomplish)",
+      "4. Ask for the next step: 'What should I click next?' or 'How do I get there?'",
+      "5. AI will provide step-by-step navigation guidance",
+      "6. Follow the instructions and describe what you see at each step"
+    ]
+  }
+
   const checkSolution = (solution: string) => {
     const normalizedSolution = solution.toLowerCase().replace(/\s+/g, ' ').trim()
     const hasClosingDiv = normalizedSolution.includes('</div>')
@@ -209,6 +234,27 @@ function App() {
       setScreenshotFeedback('⚠️ You\'re on the right track mentioning CSS! Look more specifically at the display property in the button\'s CSS styling.')
     } else {
       setScreenshotFeedback('⚠️ Try asking your AI to analyze what CSS properties might be hiding the button. Focus on properties that control element visibility.')
+    }
+  }
+
+  const checkNavigationSolution = (solution: string) => {
+    const normalizedSolution = solution.toLowerCase().trim()
+    const hasCurrentLocation = normalizedSolution.includes('dashboard') || normalizedSolution.includes('console') || normalizedSolution.includes('project')
+    const hasVisualContext = normalizedSolution.includes('see') || normalizedSolution.includes('menu') || normalizedSolution.includes('widget') || normalizedSolution.includes('button')
+    const hasSpecificGoal = normalizedSolution.includes('cloud function') || normalizedSolution.includes('function') || normalizedSolution.includes('create')
+    const hasNextStepRequest = normalizedSolution.includes('click') || normalizedSolution.includes('next') || normalizedSolution.includes('how') || normalizedSolution.includes('where')
+    const hasProjectContext = normalizedSolution.includes('my-web-app') || normalizedSolution.includes('project')
+    
+    const score = [hasCurrentLocation, hasVisualContext, hasSpecificGoal, hasNextStepRequest, hasProjectContext].filter(Boolean).length
+    
+    if (score >= 4) {
+      setNavigationFeedback('✅ Excellent! Your AI prompt includes all the key elements: current location, visual context, specific goal, and a clear request for next steps. This will get you precise navigation guidance!')
+    } else if (score >= 3) {
+      setNavigationFeedback('✅ Good work! Your prompt has most of the essential elements. Consider adding more visual context about what you can see on screen for even better AI guidance.')
+    } else if (score >= 2) {
+      setNavigationFeedback('⚠️ You\'re on the right track! Try to include: where you are now, what you can see, your specific goal, and ask for the next step.')
+    } else {
+      setNavigationFeedback('⚠️ Your prompt needs more detail. Include: current location, what you see on screen, your goal (create Cloud Function), and ask "what should I click next?"')
     }
   }
 
@@ -835,6 +881,155 @@ function App() {
                                         <p>• <strong>Mobile Convenience:</strong> Take screenshots on your phone and get instant help</p>
                                         <p>• <strong>Complex Issues:</strong> Perfect for layout problems, styling issues, and UI bugs</p>
                                         <p>• <strong>Learning Tool:</strong> Understand not just the fix, but why the problem occurred</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                              </Dialog>
+                              <Button 
+                                size="sm" 
+                                onClick={() => {
+                                  if (!completedLessons.includes(lesson.id)) {
+                                    setCompletedLessons([...completedLessons, lesson.id])
+                                  }
+                                }}
+                                className={`${
+                                  completedLessons.includes(lesson.id) 
+                                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600' 
+                                    : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
+                                } text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
+                                disabled={completedLessons.includes(lesson.id)}
+                              >
+                                {completedLessons.includes(lesson.id) ? '✅ Completed' : 'Complete Lesson'}
+                              </Button>
+                            </div>
+                          )}
+                          {lesson.id === 4 && (
+                            <div className="flex gap-2 mt-2">
+                              <Dialog open={lesson4DialogOpen} onOpenChange={setLesson4DialogOpen}>
+                                <DialogTrigger asChild>
+                                  <Button 
+                                    size="sm" 
+                                    className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                                  >
+                                    <Play className="mr-2 h-4 w-4" />
+                                    Start Lesson
+                                  </Button>
+                                </DialogTrigger>
+                              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900 to-slate-800 border-purple-500/30 text-white">
+                                <DialogHeader>
+                                  <DialogTitle className="text-2xl bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                                    Interactive Lesson: {lesson.title}
+                                  </DialogTitle>
+                                </DialogHeader>
+                                
+                                <div className="grid lg:grid-cols-2 gap-6 mt-6">
+                                  <div className="space-y-6">
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-amber-500/30">
+                                      <h3 className="text-lg font-semibold text-amber-400 mb-3">
+                                        {navigationExample.title}
+                                      </h3>
+                                      <div className="bg-amber-900/20 rounded p-3 mb-4">
+                                        <p className="text-amber-300 text-sm font-medium mb-2">Scenario:</p>
+                                        <p className="text-amber-200 text-sm mb-3">
+                                          {navigationExample.scenario}
+                                        </p>
+                                        <p className="text-amber-300 text-sm font-medium mb-2">What you see:</p>
+                                        <p className="text-amber-200 text-sm">
+                                          {navigationExample.currentView}
+                                        </p>
+                                      </div>
+                                      <div className="bg-slate-900/50 rounded p-3">
+                                        <h4 className="text-sm font-medium text-gray-300 mb-2">Good AI Prompt Example:</h4>
+                                        <div className="bg-green-900/20 border border-green-500/30 rounded p-2 mb-3">
+                                          <p className="text-green-200 text-xs font-mono">
+                                            "{navigationExample.goodPromptExample}"
+                                          </p>
+                                        </div>
+                                        <h4 className="text-sm font-medium text-gray-300 mb-2">Bad Examples (too vague):</h4>
+                                        <div className="space-y-1">
+                                          {navigationExample.badExamples.map((example, index) => (
+                                            <div key={index} className="bg-red-900/20 border border-red-500/30 rounded p-2">
+                                              <p className="text-red-200 text-xs font-mono">"{example}"</p>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-500/30">
+                                      <h3 className="text-lg font-semibold text-cyan-400 mb-3">
+                                        Effective AI Navigation Process
+                                      </h3>
+                                      <ol className="space-y-2">
+                                        {navigationExample.steps.map((step, index) => (
+                                          <li key={index} className="text-sm text-gray-300 leading-relaxed">
+                                            {step}
+                                          </li>
+                                        ))}
+                                      </ol>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="space-y-6">
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-500/30">
+                                      <h3 className="text-lg font-semibold text-purple-400 mb-3">
+                                        Your AI Navigation Prompt
+                                      </h3>
+                                      <p className="text-sm text-gray-300 mb-4">
+                                        Write an effective AI prompt to get navigation help for the scenario above. Include your current location, what you see, your goal, and ask for next steps:
+                                      </p>
+                                      <Textarea
+                                        value={userNavigationSolution}
+                                        onChange={(e) => setUserNavigationSolution(e.target.value)}
+                                        placeholder="Write your AI prompt here... (e.g., 'I'm in Google Cloud Console dashboard for project...')"
+                                        className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
+                                      />
+                                      <div className="flex gap-3 mt-4">
+                                        <Button 
+                                          onClick={() => checkNavigationSolution(userNavigationSolution)}
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                        >
+                                          Check Prompt
+                                        </Button>
+                                        <Button 
+                                          variant="outline"
+                                          onClick={() => {
+                                            setUserNavigationSolution('')
+                                            setNavigationFeedback('')
+                                          }}
+                                          className="border-slate-600 text-gray-300 hover:bg-slate-700"
+                                        >
+                                          Reset
+                                        </Button>
+                                      </div>
+                                      
+                                      {navigationFeedback && (
+                                        <div className={`mt-4 p-3 rounded-lg ${
+                                          navigationFeedback.startsWith('✅') 
+                                            ? 'bg-green-900/20 border border-green-500/30' 
+                                            : 'bg-yellow-900/20 border border-yellow-500/30'
+                                        }`}>
+                                          <p className={`text-sm ${
+                                            navigationFeedback.startsWith('✅') ? 'text-green-300' : 'text-yellow-300'
+                                          }`}>
+                                            {navigationFeedback}
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+                                    
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-emerald-500/30">
+                                      <h3 className="text-lg font-semibold text-emerald-400 mb-3">
+                                        Why This Approach Works
+                                      </h3>
+                                      <div className="space-y-2 text-sm text-gray-300">
+                                        <p>• <strong>Context:</strong> AI knows exactly where you are and what you see</p>
+                                        <p>• <strong>Clarity:</strong> Specific goals get specific, actionable guidance</p>
+                                        <p>• <strong>Efficiency:</strong> No guessing - direct path to your destination</p>
+                                        <p>• <strong>Learning:</strong> Understand interface patterns for future navigation</p>
+                                        <p>• <strong>Confidence:</strong> Navigate complex tools without fear of getting lost</p>
                                       </div>
                                     </div>
                                   </div>
