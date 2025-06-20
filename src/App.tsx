@@ -14,8 +14,11 @@ function App() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [lessonDialogOpen, setLessonDialogOpen] = useState(false)
+  const [lesson2DialogOpen, setLesson2DialogOpen] = useState(false)
   const [userSolution, setUserSolution] = useState('')
+  const [userHtmlSolution, setUserHtmlSolution] = useState('')
   const [feedback, setFeedback] = useState('')
+  const [htmlFeedback, setHtmlFeedback] = useState('')
   const [completedLessons, setCompletedLessons] = useState<number[]>([])
 
   const lessons = [
@@ -95,6 +98,31 @@ function App() {
     ]
   }
 
+  const htmlStructureExample = {
+    title: "Generate Basic HTML Structure",
+    prompt: "Create a basic HTML structure with head and body sections",
+    aiPrompt: "Please generate a basic HTML5 structure with DOCTYPE, html, head, and body tags. Include a title tag in the head section.",
+    expectedStructure: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+</head>
+<body>
+    <h1>Welcome to My Website</h1>
+    <p>This is the main content area.</p>
+</body>
+</html>`,
+    steps: [
+      "1. Ask AI: 'Please generate a basic HTML5 structure with DOCTYPE, html, head, and body tags'",
+      "2. Specify what you need: 'Include a title tag in the head section and some basic content in the body'",
+      "3. AI will provide a complete HTML template with proper structure",
+      "4. Copy the generated HTML code and paste it below for validation",
+      "5. Use this as a starting point for building your webpage faster"
+    ]
+  }
+
   const checkSolution = (solution: string) => {
     const normalizedSolution = solution.toLowerCase().replace(/\s+/g, ' ').trim()
     const hasClosingDiv = normalizedSolution.includes('</div>')
@@ -106,6 +134,27 @@ function App() {
       setFeedback('✅ Good! You added the closing </div> tag. Make sure it\'s in the right position before </body>.')
     } else {
       setFeedback('❌ Not quite right. Look for the missing closing tag. Hint: Check what element is opened but not closed.')
+    }
+  }
+
+  const checkHtmlStructure = (htmlCode: string) => {
+    const cleanHtml = htmlCode.trim().toLowerCase()
+    const hasDoctype = cleanHtml.includes('<!doctype') || cleanHtml.includes('<!DOCTYPE')
+    const hasHtml = cleanHtml.includes('<html') && cleanHtml.includes('</html>')
+    const hasHead = cleanHtml.includes('<head') && cleanHtml.includes('</head>')
+    const hasBody = cleanHtml.includes('<body') && cleanHtml.includes('</body>')
+    const hasTitle = cleanHtml.includes('<title') && cleanHtml.includes('</title>')
+    
+    if (hasHtml && hasHead && hasBody) {
+      if (hasDoctype && hasTitle) {
+        setHtmlFeedback('✅ Excellent! Your HTML structure is complete with DOCTYPE, html, head, body, and title tags. This is a perfect foundation for any webpage!')
+      } else {
+        setHtmlFeedback('✅ Great job! Your HTML has the essential head and body structure. Consider adding DOCTYPE and title tags for a complete structure.')
+      }
+    } else if (hasHead || hasBody) {
+      setHtmlFeedback('⚠️ Good start! You have some HTML structure, but make sure to include both <head> and <body> sections within <html> tags.')
+    } else {
+      setHtmlFeedback('⚠️ Please generate a basic HTML structure with <html>, <head>, and <body> tags. Ask your AI to create a simple HTML template!')
     }
   }
 
@@ -464,6 +513,140 @@ function App() {
                                         <pre className="text-xs text-gray-300 overflow-x-auto">
                                           <code>{errorExample.correctCode}</code>
                                         </pre>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                              </Dialog>
+                              <Button 
+                                size="sm" 
+                                onClick={() => {
+                                  if (!completedLessons.includes(lesson.id)) {
+                                    setCompletedLessons([...completedLessons, lesson.id])
+                                  }
+                                }}
+                                className={`${
+                                  completedLessons.includes(lesson.id) 
+                                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600' 
+                                    : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
+                                } text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
+                                disabled={completedLessons.includes(lesson.id)}
+                              >
+                                {completedLessons.includes(lesson.id) ? '✅ Completed' : 'Complete Lesson'}
+                              </Button>
+                            </div>
+                          )}
+                          {lesson.id === 2 && (
+                            <div className="flex gap-2 mt-2">
+                              <Dialog open={lesson2DialogOpen} onOpenChange={setLesson2DialogOpen}>
+                                <DialogTrigger asChild>
+                                  <Button 
+                                    size="sm" 
+                                    className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                                  >
+                                    <Play className="mr-2 h-4 w-4" />
+                                    Start Lesson
+                                  </Button>
+                                </DialogTrigger>
+                              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900 to-slate-800 border-purple-500/30 text-white">
+                                <DialogHeader>
+                                  <DialogTitle className="text-2xl bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                                    Interactive Lesson: {lesson.title}
+                                  </DialogTitle>
+                                </DialogHeader>
+                                
+                                <div className="grid lg:grid-cols-2 gap-6 mt-6">
+                                  <div className="space-y-6">
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-500/30">
+                                      <h3 className="text-lg font-semibold text-blue-400 mb-3">
+                                        {htmlStructureExample.title}
+                                      </h3>
+                                      <div className="bg-blue-900/20 rounded p-3 mb-4">
+                                        <p className="text-blue-300 text-sm font-medium mb-2">AI Prompt Example:</p>
+                                        <code className="text-blue-200 text-sm">
+                                          "{htmlStructureExample.aiPrompt}"
+                                        </code>
+                                      </div>
+                                      <div className="bg-slate-900/50 rounded p-3">
+                                        <h4 className="text-sm font-medium text-gray-300 mb-2">Expected HTML Structure:</h4>
+                                        <pre className="text-xs text-gray-300 overflow-x-auto">
+                                          <code>{htmlStructureExample.expectedStructure}</code>
+                                        </pre>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-500/30">
+                                      <h3 className="text-lg font-semibold text-cyan-400 mb-3">
+                                        Step-by-Step Process
+                                      </h3>
+                                      <ol className="space-y-2">
+                                        {htmlStructureExample.steps.map((step, index) => (
+                                          <li key={index} className="text-sm text-gray-300 leading-relaxed">
+                                            {step}
+                                          </li>
+                                        ))}
+                                      </ol>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="space-y-6">
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-500/30">
+                                      <h3 className="text-lg font-semibold text-purple-400 mb-3">
+                                        Your HTML Structure
+                                      </h3>
+                                      <p className="text-sm text-gray-300 mb-4">
+                                        Ask your AI to generate a basic HTML structure, then paste the generated code below:
+                                      </p>
+                                      <Textarea
+                                        value={userHtmlSolution}
+                                        onChange={(e) => setUserHtmlSolution(e.target.value)}
+                                        placeholder="Paste your AI-generated HTML structure here..."
+                                        className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
+                                      />
+                                      <div className="flex gap-3 mt-4">
+                                        <Button 
+                                          onClick={() => checkHtmlStructure(userHtmlSolution)}
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                        >
+                                          Check Structure
+                                        </Button>
+                                        <Button 
+                                          variant="outline"
+                                          onClick={() => {
+                                            setUserHtmlSolution('')
+                                            setHtmlFeedback('')
+                                          }}
+                                          className="border-slate-600 text-gray-300 hover:bg-slate-700"
+                                        >
+                                          Reset
+                                        </Button>
+                                      </div>
+                                      
+                                      {htmlFeedback && (
+                                        <div className={`mt-4 p-3 rounded-lg ${
+                                          htmlFeedback.startsWith('✅') 
+                                            ? 'bg-green-900/20 border border-green-500/30' 
+                                            : 'bg-yellow-900/20 border border-yellow-500/30'
+                                        }`}>
+                                          <p className={`text-sm ${
+                                            htmlFeedback.startsWith('✅') ? 'text-green-300' : 'text-yellow-300'
+                                          }`}>
+                                            {htmlFeedback}
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+                                    
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-emerald-500/30">
+                                      <h3 className="text-lg font-semibold text-emerald-400 mb-3">
+                                        Why This Matters
+                                      </h3>
+                                      <div className="space-y-2 text-sm text-gray-300">
+                                        <p>• <strong>Speed:</strong> Generate HTML structure in seconds instead of typing from scratch</p>
+                                        <p>• <strong>Accuracy:</strong> AI ensures proper DOCTYPE, meta tags, and semantic structure</p>
+                                        <p>• <strong>Best Practices:</strong> Get modern HTML5 standards automatically included</p>
+                                        <p>• <strong>Consistency:</strong> Maintain the same structure across all your projects</p>
                                       </div>
                                     </div>
                                   </div>
