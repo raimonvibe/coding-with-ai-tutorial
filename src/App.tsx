@@ -95,7 +95,6 @@ function App() {
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#tutorials" className="text-gray-300 hover:text-cyan-400 transition-all duration-300 hover:scale-105">Tutorials</a>
             </div>
 
             <div className="md:hidden">
@@ -115,7 +114,6 @@ function App() {
         {mobileMenuOpen && (
           <div className="md:hidden bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-sm border-t border-purple-500/20">
             <div className="px-4 pt-4 pb-6 space-y-3">
-              <a href="#tutorials" className="block px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-cyan-400/10 rounded-lg transition-all duration-300">Tutorials</a>
             </div>
           </div>
         )}
