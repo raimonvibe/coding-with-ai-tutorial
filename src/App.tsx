@@ -620,6 +620,7 @@ function App() {
                                         value={userSolution}
                                         onChange={(e) => setUserSolution(e.target.value)}
                                         placeholder="Paste your corrected HTML code here..."
+                                        maxLength={1000}
                                         className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
                                       />
                                       <div className="flex gap-3 mt-4">
@@ -753,6 +754,7 @@ function App() {
                                         value={userHtmlSolution}
                                         onChange={(e) => setUserHtmlSolution(e.target.value)}
                                         placeholder="Paste your AI-generated HTML structure here..."
+                                        maxLength={1000}
                                         className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
                                       />
                                       <div className="flex gap-3 mt-4">
@@ -887,6 +889,7 @@ function App() {
                                         value={userScreenshotSolution}
                                         onChange={(e) => setUserScreenshotSolution(e.target.value)}
                                         placeholder="Paste your AI's analysis and solution here..."
+                                        maxLength={1000}
                                         className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
                                       />
                                       <div className="flex gap-3 mt-4">
@@ -1035,6 +1038,7 @@ function App() {
                                         value={userNavigationSolution}
                                         onChange={(e) => setUserNavigationSolution(e.target.value)}
                                         placeholder="Write your AI prompt here... (e.g., 'I'm in Google Cloud Console dashboard for project...')"
+                                        maxLength={1000}
                                         className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
                                       />
                                       <div className="flex gap-3 mt-4">
@@ -1184,6 +1188,7 @@ function App() {
                                         value={userQuerySolution}
                                         onChange={(e) => setUserQuerySolution(e.target.value)}
                                         placeholder="Write your AI prompt here... (e.g., 'I need a terminal command to search for...')"
+                                        maxLength={1000}
                                         className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
                                       />
                                       <div className="flex gap-3 mt-4">
