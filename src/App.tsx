@@ -14,43 +14,51 @@ function App() {
   const lessons = [
     {
       id: 1,
-      title: "Introduction to AI-Assisted Programming",
-      description: "Learn the fundamentals of coding with AI tools and understand how they can accelerate your development process.",
-      duration: "15 min",
+      title: "Foutmeldingen Stap voor Stap Oplossen",
+      description: "Je lost stap voor stap foutmeldingen op door de errorcodes te kopiëren en aan AI te vragen hoe je ze kunt fixen. Zo leer je ook meteen wat het probleem was.",
+      duration: "5 min",
       difficulty: "Beginner",
-      topics: ["AI Tools Overview", "Setting up your environment", "First AI-generated code"]
+      topics: ["Error codes", "Debugging", "Leren van fouten"]
     },
     {
       id: 2,
-      title: "Prompt Engineering for Code Generation",
-      description: "Master the art of writing effective prompts to get better code suggestions from AI assistants.",
-      duration: "25 min",
+      title: "Basis HTML-Structuur Genereren",
+      description: "Je laat AI een basis-HTML-structuur genereren, met de head en body, zodat je sneller kunt starten met het bouwen van een webpagina.",
+      duration: "3 min",
       difficulty: "Beginner",
-      topics: ["Prompt structure", "Context setting", "Iterative refinement"]
+      topics: ["HTML structuur", "Snelle start", "Web development"]
     },
     {
       id: 3,
-      title: "Debugging with AI Assistance",
-      description: "Learn how to leverage AI tools to identify, understand, and fix bugs in your code efficiently.",
-      duration: "30 min",
-      difficulty: "Intermediate",
-      topics: ["Error analysis", "AI debugging strategies", "Code review with AI"]
+      title: "Screenshots Analyseren met AI",
+      description: "Je maakt screenshots van foutmeldingen of uitleg in webservices, en vraagt AI wat er aan de hand is en wat je moet doen. Zo krijg je gerichte hulp.",
+      duration: "4 min",
+      difficulty: "Beginner",
+      topics: ["Visual debugging", "Screenshot analyse", "Gerichte hulp"]
     },
     {
       id: 4,
-      title: "Building Full Applications with AI",
-      description: "Create complete web applications using AI assistance for both frontend and backend development.",
-      duration: "45 min",
-      difficulty: "Advanced",
-      topics: ["Project planning", "Component generation", "API development"]
+      title: "Navigeren in Complexe Tools",
+      description: "Bij complexe tools zoals de Google Cloud Console navigeer je met hulp van AI. Je vertelt waar je zit en vraagt wat je volgende stap moet zijn, om de juiste instellingen te vinden.",
+      duration: "7 min",
+      difficulty: "Intermediate",
+      topics: ["Cloud platforms", "Navigatie hulp", "Tool mastery"]
     },
     {
       id: 5,
-      title: "Best Practices and Ethics",
-      description: "Understand the responsible use of AI in programming and learn industry best practices.",
-      duration: "20 min",
+      title: "Syntax en Commando's Opvragen",
+      description: "Als je de juiste syntax even niet weet – bijvoorbeeld in de terminal of bij het schrijven van code – dan vraag je AI om de juiste commando's of voorbeelden.",
+      duration: "2 min",
+      difficulty: "Beginner",
+      topics: ["Syntax hulp", "Terminal commands", "Code voorbeelden"]
+    },
+    {
+      id: 6,
+      title: "AI als Leermaatje en Gids",
+      description: "Je gebruikt AI dus niet alleen als probleemoplosser, maar ook als leermaatje, gids en startmotor in je projecten. Echt een hele efficiënte en slimme werkwijze.",
+      duration: "10 min",
       difficulty: "Intermediate",
-      topics: ["Code quality", "Security considerations", "Ethical AI use"]
+      topics: ["Workflow optimalisatie", "Leerpartner", "Efficiënt werken"]
     }
   ]
 
@@ -98,7 +106,7 @@ function App() {
                 <Sparkles className="h-3 w-3 text-yellow-400 absolute -top-1 -right-1 animate-pulse" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                AI Code Academy
+                AI Tips Academy
               </span>
             </div>
             
@@ -152,34 +160,34 @@ function App() {
           <div className="mb-8">
             <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full border border-cyan-400/30 mb-6">
               <Star className="h-4 w-4 text-yellow-400 mr-2" />
-              <span className="text-sm font-medium text-cyan-300">The Future of Programming Education</span>
+              <span className="text-sm font-medium text-cyan-300">De Toekomst van Programmeren met AI</span>
             </div>
           </div>
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight">
             <span className="bg-gradient-to-r from-cyan-400 via-purple-500 via-pink-500 to-emerald-400 bg-clip-text text-transparent animate-pulse">
-              Learn Programming
+              Slimme AI Tips
             </span>
             <br />
             <span className="bg-gradient-to-r from-emerald-400 via-cyan-500 to-purple-500 bg-clip-text text-transparent">
-              with AI
+              voor Programmeurs
             </span>
           </h1>
           
           <p className="text-lg sm:text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Master the art of coding with AI assistance. Our interactive tutorials teach you how to leverage artificial intelligence to become a 
-            <span className="text-cyan-400 font-semibold"> 10x more efficient</span> and 
-            <span className="text-emerald-400 font-semibold"> effective programmer</span>.
+            Ontdek hoe je AI slim kunt inzetten bij het programmeren. Onze praktische tips leren je hoe je kunstmatige intelligentie gebruikt om een 
+            <span className="text-cyan-400 font-semibold"> 10x efficiëntere</span> en 
+            <span className="text-emerald-400 font-semibold"> effectievere programmeur</span> te worden.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Button size="lg" className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/40 transition-all duration-300 transform hover:scale-105 px-8 py-4 text-lg">
               <Play className="mr-3 h-6 w-6" />
-              Start Learning Now
+              Begin Nu
             </Button>
             <Button size="lg" variant="outline" className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105 px-8 py-4 text-lg">
               <BookOpen className="mr-3 h-6 w-6" />
-              View Curriculum
+              Bekijk Tips
             </Button>
           </div>
           
@@ -192,10 +200,10 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-              Why Learn Programming with AI?
+              Waarom AI Gebruiken bij Programmeren?
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Discover the revolutionary approach to coding education that's transforming how developers learn and build.
+              Ontdek de revolutionaire aanpak die de manier waarop ontwikkelaars leren en bouwen transformeert.
             </p>
           </div>
           
@@ -304,10 +312,10 @@ function App() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-              Interactive Tutorials
+              Slimme AI Tips voor Programmeurs
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Master AI programming through hands-on tutorials designed to transform you into a coding expert
+              Ontdek hoe je AI op meerdere slimme manieren kunt gebruiken bij het programmeren om efficiënter te werken
             </p>
           </div>
           
@@ -415,7 +423,7 @@ function App() {
                   <Sparkles className="h-3 w-3 text-yellow-400 absolute -top-1 -right-1 animate-pulse" />
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                  AI Code Academy
+                  AI Tips Academy
                 </span>
               </div>
               <p className="text-gray-300 text-lg leading-relaxed mb-6 max-w-2xl mx-auto">
@@ -500,7 +508,7 @@ function App() {
           <div className="border-t border-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-400 text-sm mb-4 md:mb-0">
-                &copy; 2024 AI Code Academy. All rights reserved. Built with ❤️ and AI.
+                &copy; 2024 AI Tips Academy. All rights reserved. Built with ❤️ and AI.
               </p>
 
             </div>
