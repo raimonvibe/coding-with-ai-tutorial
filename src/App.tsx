@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Brain, Code, Zap, Menu, X, BookOpen, Sparkles, Star, Play, Target } from 'lucide-react'
+import { Brain, Code, Zap, Menu, X, Sparkles, Star, Play, Target } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
 import { Badge } from './components/ui/badge'
@@ -18,6 +18,7 @@ function App() {
   const [lesson3DialogOpen, setLesson3DialogOpen] = useState(false)
   const [lesson4DialogOpen, setLesson4DialogOpen] = useState(false)
   const [lesson5DialogOpen, setLesson5DialogOpen] = useState(false)
+  const [lesson6DialogOpen, setLesson6DialogOpen] = useState(false)
   const [userSolution, setUserSolution] = useState('')
   const [userHtmlSolution, setUserHtmlSolution] = useState('')
   const [userScreenshotSolution, setUserScreenshotSolution] = useState('')
@@ -362,7 +363,52 @@ function App() {
     }
   ]
 
+const [userLesson6Solution, setUserLesson6Solution] = useState('');
+const userLesson6SolutionRef = useRef<HTMLTextAreaElement>(null);
+const [userLesson6SolutionCount, setUserLesson6SolutionCount] = useState(0);
+const [lesson6Feedback, setLesson6Feedback] = useState('');
 
+const checkLesson6Solution = (solution: string) => {
+  const normalizedSolution = solution.toLowerCase().trim();
+  const hasSpecificTask = normalizedSolution.includes('react') || normalizedSolution.includes('todo list');
+  const hasComponentStructure = normalizedSolution.includes('component') || normalizedSolution.includes('structure');
+  const hasExplanations = normalizedSolution.includes('explanation') || normalizedSolution.includes('purpose');
+  const hasTechStack = normalizedSolution.includes('react');
+  const hasClearRequest = normalizedSolution.includes('suggest') || normalizedSolution.includes('provide');
+
+  const score = [hasSpecificTask, hasComponentStructure, hasExplanations, hasTechStack, hasClearRequest].filter(Boolean).length;
+
+  if (score >= 4) {
+    setLesson6Feedback('✅ Excellent! Your AI prompt includes all key elements: specific task, component structure, explanations, tech stack, and a clear request. This will get you a precise project plan!');
+  } else if (score >= 3) {
+    setLesson6Feedback('✅ Good work! Your prompt has most essential elements. Consider adding more details about component structure or requesting explanations for better results.');
+  } else if (score >= 2) {
+    setLesson6Feedback('⚠️ You’re on the right track! Include: the task (React todo list), component structure, tech stack (React), and request explanations.');
+  } else {
+    setLesson6Feedback('⚠️ Your prompt needs more detail. Include: the task (React todo list app), component structure, tech stack (React), and ask for explanations.');
+  }
+};
+
+const learningExample = {
+  title: "Crafting AI Prompts for React Project Planning",
+  scenario: "You’re starting a new project to build a todo list application using React and need a clear component structure to begin development.",
+  task: "Craft an AI prompt to get a detailed component structure, including main components, their props, and explanations for their purpose.",
+  goodPromptExample: "I’m building a React todo list app. Suggest a component structure, including main components, their props, and state management approach. Provide a brief explanation for each component’s purpose.",
+  badExamples: [
+    "Build a todo app.",
+    "Make a React app.",
+    "How to start a project?",
+    "Todo list help"
+  ],
+  steps: [
+    "1. Clearly state your project goal (e.g., building a React todo list app).",
+    "2. Specify the tech stack and desired output (e.g., component structure, props).",
+    "3. Request explanations to understand the AI’s suggestions.",
+    "4. Ask for a clear, actionable plan (e.g., suggest, provide).",
+    "5. Refine the prompt with follow-up questions if needed.",
+    "6. Use the AI’s response as a starting point for your project."
+  ]
+};
 
 
 
@@ -441,13 +487,6 @@ function App() {
             <span className="text-cyan-400 font-semibold"> 10x more efficient</span> and 
             <span className="text-emerald-400 font-semibold"> effective programmer</span>.
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button size="lg" variant="outline" className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105 px-8 py-4 text-lg">
-              <BookOpen className="mr-3 h-6 w-6" />
-              View Tips
-            </Button>
-          </div>
           
 
         </div>
@@ -1318,6 +1357,162 @@ function App() {
                               </Button>
                             </div>
                           )}
+{lesson.id === 6 && (
+  <div className="flex gap-2 mt-2">
+    <Dialog open={lesson6DialogOpen} onOpenChange={setLesson6DialogOpen}>
+      <DialogTrigger asChild>
+        <Button 
+          size="sm" 
+          className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <Play className="mr-2 h-4 w-4" />
+          Start Lesson
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900 to-slate-800 border-purple-500/30 text-white">
+        <DialogHeader>
+          <DialogTitle className="text-2xl bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            Interactive Lesson: {lesson.title}
+          </DialogTitle>
+        </DialogHeader>
+        
+        <div className="grid lg:grid-cols-2 gap-6 mt-6">
+          <div className="space-y-6">
+            <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-500/30">
+              <h3 className="text-lg font-semibold text-blue-400 mb-3">
+                {learningExample.title}
+              </h3>
+              <div className="bg-blue-900/20 rounded p-3 mb-4">
+                <p className="text-blue-300 text-sm font-medium mb-2">Scenario:</p>
+                <p className="text-blue-200 text-sm mb-3">
+                  {learningExample.scenario}
+                </p>
+                <p className="text-blue-300 text-sm font-medium mb-2">Task:</p>
+                <p className="text-blue-200 text-sm">
+                  {learningExample.task}
+                </p>
+              </div>
+              <div className="bg-slate-900/50 rounded p-3">
+                <h4 className="text-sm font-medium text-gray-300 mb-2">Good AI Prompt Example:</h4>
+                <div className="bg-green-900/20 border border-green-500/30 rounded p-2 mb-3">
+                  <p className="text-green-200 text-xs font-mono">
+                    "{learningExample.goodPromptExample}"
+                  </p>
+                </div>
+                <h4 className="text-sm font-medium text-gray-300 mb-2">Bad Examples (too vague):</h4>
+                <div className="space-y-1">
+                  {learningExample.badExamples.map((example, index) => (
+                    <div key={index} className="bg-red-900/20 border border-red-500/30 rounded p-2">
+                      <p className="text-red-200 text-xs font-mono">"{example}"</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-500/30">
+              <h3 className="text-lg font-semibold text-cyan-400 mb-3">
+                Effective AI Prompt Process
+              </h3>
+              <ol className="space-y-2">
+                {learningExample.steps.map((step, index) => (
+                  <li key={index} className="text-sm text-gray-300 leading-relaxed">
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+          
+          <div className="space-y-6">
+            <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-500/30">
+              <h3 className="text-lg font-semibold text-purple-400 mb-3">
+                Your AI Prompt
+              </h3>
+              <p className="text-sm text-gray-300 mb-4">
+                Write an effective AI prompt to get a component structure for a React todo list app. Include your task, tech stack, and request explanations for each component:
+              </p>
+              <Textarea
+                ref={userLesson6SolutionRef}
+                value={userLesson6Solution}
+                onChange={(e) => {
+                  setUserLesson6Solution(e.target.value)
+                  setUserLesson6SolutionCount(e.target.value.length)
+                }}
+                placeholder="Write your AI prompt here... (e.g., 'I’m building a React todo list app...')"
+                maxLength={1000}
+                className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
+              />
+              {renderCharacterCounter(userLesson6SolutionCount)}
+              <div className="flex gap-3 mt-4">
+                <Button 
+                  onClick={() => checkLesson6Solution(userLesson6Solution)}
+                  disabled={userLesson6SolutionCount > 1000}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Check Prompt
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => {
+                    setUserLesson6Solution('')
+                    setLesson6Feedback('')
+                  }}
+                  className="border-slate-600 text-gray-300 hover:bg-slate-700"
+                >
+                  Reset
+                </Button>
+              </div>
+              
+              {lesson6Feedback && (
+                <div className={`mt-4 p-3 rounded-lg ${
+                  lesson6Feedback.startsWith('✅') 
+                    ? 'bg-green-900/20 border border-green-500/30' 
+                    : 'bg-yellow-900/20 border border-yellow-500/30'
+                }`}>
+                  <p className={`text-sm ${
+                    lesson6Feedback.startsWith('✅') ? 'text-green-300' : 'text-yellow-300'
+                  }`}>
+                    {lesson6Feedback}
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            <div className="bg-slate-800/50 rounded-lg p-4 border border-emerald-500/30">
+              <h3 className="text-lg font-semibold text-emerald-400 mb-3">
+                Why This Approach Works
+              </h3>
+              <div className="space-y-2 text-sm text-gray-300">
+                <p>• <strong>Specificity:</strong> Detailed prompts yield precise, actionable plans.</p>
+                <p>• <strong>Context:</strong> Including tech stack ensures relevant suggestions.</p>
+                <p>• <strong>Learning:</strong> Explanations help you understand design choices.</p>
+                <p>• <strong>Efficiency:</strong> Get a project roadmap quickly, saving research time.</p>
+                <p>• <strong>Iterative Growth:</strong> Refine prompts to deepen understanding.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+    <Button 
+      size="sm" 
+      onClick={() => {
+        if (!completedLessons.includes(lesson.id)) {
+          setCompletedLessons([...completedLessons, lesson.id])
+        }
+      }}
+      className={`${
+        completedLessons.includes(lesson.id) 
+          ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600' 
+          : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
+      } text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
+      disabled={completedLessons.includes(lesson.id)}
+    >
+      {completedLessons.includes(lesson.id) ? '✅ Completed' : 'Complete Lesson'}
+    </Button>
+  </div>
+)}
                         </div>
                       </div>
                       
