@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Brain, Code, Zap, Menu, X, BookOpen, Sparkles, Star, Play } from 'lucide-react'
+import { Brain, Code, Zap, Menu, X, BookOpen, Sparkles, Star, Play, Target } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
 import { Badge } from './components/ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './components/ui/dialog'
 import { Textarea } from './components/ui/textarea'
+import { Progress } from './components/ui/progress'
 
 import './App.css'
 
@@ -15,6 +16,7 @@ function App() {
   const [lessonDialogOpen, setLessonDialogOpen] = useState(false)
   const [userSolution, setUserSolution] = useState('')
   const [feedback, setFeedback] = useState('')
+  const [completedLessons, setCompletedLessons] = useState<number[]>([])
 
   const lessons = [
     {
@@ -54,6 +56,8 @@ function App() {
       topics: ["Workflow optimization", "Learning partner", "Efficient working"]
     }
   ]
+
+  const progressPercentage = (completedLessons.length / lessons.length) * 100
 
   const errorExample = {
     title: "Missing Closing Tag Error",
@@ -220,6 +224,74 @@ function App() {
         </div>
       </section>
 
+      {/* Progress Section */}
+      <section id="progress" className="py-20 px-4 bg-gradient-to-b from-slate-800/50 to-slate-900/50">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+              Your Learning Progress
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Track your journey to becoming an AI-powered developer
+            </p>
+          </div>
+          
+          <Card className="bg-gradient-to-br from-slate-800/80 to-slate-700/80 border-2 border-emerald-500/30 shadow-2xl shadow-emerald-500/10 mb-8 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center text-2xl">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 mr-4">
+                  <Target className="h-8 w-8 text-emerald-400" />
+                </div>
+                <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                  Overall Progress
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-300 text-lg">Completed Lessons</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-2xl font-bold text-emerald-400">{completedLessons.length}</span>
+                    <span className="text-gray-400">/</span>
+                    <span className="text-xl text-gray-300">{lessons.length}</span>
+                  </div>
+                </div>
+                
+                <div className="relative">
+                  <Progress 
+                    value={progressPercentage} 
+                    className="h-4 bg-slate-700 rounded-full overflow-hidden"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full opacity-20 animate-pulse"></div>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+                  <div className="text-center p-4 bg-gradient-to-br from-emerald-900/30 to-cyan-900/30 rounded-xl border border-emerald-500/20">
+                    <div className="text-2xl font-bold text-emerald-400">{Math.round(progressPercentage)}%</div>
+                    <div className="text-sm text-gray-400">Complete</div>
+                  </div>
+                  <div className="text-center p-4 bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/20">
+                    <div className="text-2xl font-bold text-purple-400">{lessons.length - completedLessons.length}</div>
+                    <div className="text-sm text-gray-400">Remaining</div>
+                  </div>
+                  <div className="text-center p-4 bg-gradient-to-br from-amber-900/30 to-orange-900/30 rounded-xl border border-amber-500/20">
+                    <div className="text-2xl font-bold text-amber-400">
+                      {completedLessons.length * 100}
+                    </div>
+                    <div className="text-sm text-gray-400">Score</div>
+                  </div>
+                </div>
+                
+                <div className="text-center mt-6">
+                  <p className="text-gray-400">Keep learning to unlock your full potential!</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-slate-900/50 to-slate-800/50">
         <div className="max-w-6xl mx-auto">
@@ -285,16 +357,17 @@ function App() {
                             {lesson.title}
                           </CardTitle>
                           {lesson.id === 1 && (
-                            <Dialog open={lessonDialogOpen} onOpenChange={setLessonDialogOpen}>
-                              <DialogTrigger asChild>
-                                <Button 
-                                  size="sm" 
-                                  className="mt-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
-                                >
-                                  <Play className="mr-2 h-4 w-4" />
-                                  Start Lesson
-                                </Button>
-                              </DialogTrigger>
+                            <div className="flex gap-2 mt-2">
+                              <Dialog open={lessonDialogOpen} onOpenChange={setLessonDialogOpen}>
+                                <DialogTrigger asChild>
+                                  <Button 
+                                    size="sm" 
+                                    className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                                  >
+                                    <Play className="mr-2 h-4 w-4" />
+                                    Start Lesson
+                                  </Button>
+                                </DialogTrigger>
                               <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900 to-slate-800 border-purple-500/30 text-white">
                                 <DialogHeader>
                                   <DialogTitle className="text-2xl bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
@@ -396,7 +469,24 @@ function App() {
                                   </div>
                                 </div>
                               </DialogContent>
-                            </Dialog>
+                              </Dialog>
+                              <Button 
+                                size="sm" 
+                                onClick={() => {
+                                  if (!completedLessons.includes(lesson.id)) {
+                                    setCompletedLessons([...completedLessons, lesson.id])
+                                  }
+                                }}
+                                className={`${
+                                  completedLessons.includes(lesson.id) 
+                                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600' 
+                                    : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
+                                } text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
+                                disabled={completedLessons.includes(lesson.id)}
+                              >
+                                {completedLessons.includes(lesson.id) ? '✅ Completed' : 'Complete Lesson'}
+                              </Button>
+                            </div>
                           )}
                         </div>
                       </div>
