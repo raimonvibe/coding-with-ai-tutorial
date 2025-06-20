@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { Brain, Code, Zap, Menu, X, BookOpen, Sparkles, Star } from 'lucide-react'
+import { Brain, Code, Zap, Menu, X, BookOpen, Sparkles, Star, Play } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
 import { Badge } from './components/ui/badge'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './components/ui/dialog'
+import { Textarea } from './components/ui/textarea'
 
 import './App.css'
 
@@ -10,6 +12,9 @@ function App() {
 
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [lessonDialogOpen, setLessonDialogOpen] = useState(false)
+  const [userSolution, setUserSolution] = useState('')
+  const [feedback, setFeedback] = useState('')
 
   const lessons = [
     {
@@ -49,6 +54,56 @@ function App() {
       topics: ["Workflow optimization", "Learning partner", "Efficient working"]
     }
   ]
+
+  const errorExample = {
+    title: "Missing Closing Tag Error",
+    errorMessage: "Error: Unclosed element 'div' at line 5",
+    brokenCode: `<!DOCTYPE html>
+<html>
+<head>
+    <title>My Website</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to my site</h1>
+        <p>This is some content</p>
+    <!-- Missing closing </div> tag -->
+</body>
+</html>`,
+    correctCode: `<!DOCTYPE html>
+<html>
+<head>
+    <title>My Website</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to my site</h1>
+        <p>This is some content</p>
+    </div>
+</body>
+</html>`,
+    steps: [
+      "1. Copy the error message: 'Error: Unclosed element 'div' at line 5'",
+      "2. Ask AI: 'I'm getting this HTML error: [paste error]. Here's my code: [paste code]. How do I fix this?'",
+      "3. AI will identify the missing closing tag",
+      "4. Add the missing </div> tag before </body>",
+      "5. Test your fix to ensure the error is resolved"
+    ]
+  }
+
+  const checkSolution = (solution: string) => {
+    const normalizedSolution = solution.toLowerCase().replace(/\s+/g, ' ').trim()
+    const hasClosingDiv = normalizedSolution.includes('</div>')
+    const hasProperStructure = normalizedSolution.includes('<div') && normalizedSolution.includes('</div>')
+    
+    if (hasClosingDiv && hasProperStructure) {
+      setFeedback('✅ Correct! You successfully added the missing closing </div> tag. Great job following the AI-assisted debugging process!')
+    } else if (hasClosingDiv) {
+      setFeedback('✅ Good! You added the closing </div> tag. Make sure it\'s in the right position before </body>.')
+    } else {
+      setFeedback('❌ Not quite right. Look for the missing closing tag. Hint: Check what element is opened but not closed.')
+    }
+  }
 
   const features = [
     {
@@ -229,7 +284,120 @@ function App() {
                           <CardTitle className="text-white text-xl lg:text-2xl mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 group-hover:bg-clip-text transition-all duration-300">
                             {lesson.title}
                           </CardTitle>
-
+                          {lesson.id === 1 && (
+                            <Dialog open={lessonDialogOpen} onOpenChange={setLessonDialogOpen}>
+                              <DialogTrigger asChild>
+                                <Button 
+                                  size="sm" 
+                                  className="mt-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                                >
+                                  <Play className="mr-2 h-4 w-4" />
+                                  Start Lesson
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900 to-slate-800 border-purple-500/30 text-white">
+                                <DialogHeader>
+                                  <DialogTitle className="text-2xl bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                                    Interactive Lesson: {lesson.title}
+                                  </DialogTitle>
+                                </DialogHeader>
+                                
+                                <div className="grid lg:grid-cols-2 gap-6 mt-6">
+                                  <div className="space-y-6">
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-red-500/30">
+                                      <h3 className="text-lg font-semibold text-red-400 mb-3">
+                                        {errorExample.title}
+                                      </h3>
+                                      <div className="bg-red-900/20 rounded p-3 mb-4">
+                                        <code className="text-red-300 text-sm">
+                                          {errorExample.errorMessage}
+                                        </code>
+                                      </div>
+                                      <div className="bg-slate-900/50 rounded p-3">
+                                        <h4 className="text-sm font-medium text-gray-300 mb-2">Broken Code:</h4>
+                                        <pre className="text-xs text-gray-300 overflow-x-auto">
+                                          <code>{errorExample.brokenCode}</code>
+                                        </pre>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-500/30">
+                                      <h3 className="text-lg font-semibold text-cyan-400 mb-3">
+                                        Step-by-Step Solution Process
+                                      </h3>
+                                      <ol className="space-y-2">
+                                        {errorExample.steps.map((step, index) => (
+                                          <li key={index} className="text-sm text-gray-300 leading-relaxed">
+                                            {step}
+                                          </li>
+                                        ))}
+                                      </ol>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="space-y-6">
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-500/30">
+                                      <h3 className="text-lg font-semibold text-purple-400 mb-3">
+                                        Your Solution
+                                      </h3>
+                                      <p className="text-sm text-gray-300 mb-4">
+                                        Fix the HTML code by adding the missing closing tag. Paste your corrected code below:
+                                      </p>
+                                      <Textarea
+                                        value={userSolution}
+                                        onChange={(e) => setUserSolution(e.target.value)}
+                                        placeholder="Paste your corrected HTML code here..."
+                                        className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
+                                      />
+                                      <div className="flex gap-3 mt-4">
+                                        <Button 
+                                          onClick={() => checkSolution(userSolution)}
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                        >
+                                          Check Solution
+                                        </Button>
+                                        <Button 
+                                          variant="outline"
+                                          onClick={() => {
+                                            setUserSolution('')
+                                            setFeedback('')
+                                          }}
+                                          className="border-slate-600 text-gray-300 hover:bg-slate-700"
+                                        >
+                                          Reset
+                                        </Button>
+                                      </div>
+                                      
+                                      {feedback && (
+                                        <div className={`mt-4 p-3 rounded-lg ${
+                                          feedback.startsWith('✅') 
+                                            ? 'bg-green-900/20 border border-green-500/30' 
+                                            : 'bg-yellow-900/20 border border-yellow-500/30'
+                                        }`}>
+                                          <p className={`text-sm ${
+                                            feedback.startsWith('✅') ? 'text-green-300' : 'text-yellow-300'
+                                          }`}>
+                                            {feedback}
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+                                    
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-emerald-500/30">
+                                      <h3 className="text-lg font-semibold text-emerald-400 mb-3">
+                                        Expected Result
+                                      </h3>
+                                      <div className="bg-slate-900/50 rounded p-3">
+                                        <pre className="text-xs text-gray-300 overflow-x-auto">
+                                          <code>{errorExample.correctCode}</code>
+                                        </pre>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                          )}
                         </div>
                       </div>
                       
