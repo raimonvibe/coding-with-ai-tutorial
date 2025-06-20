@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Brain, Code, Zap, Menu, X, BookOpen, Sparkles, Star, Play, Target } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
@@ -23,6 +23,90 @@ function App() {
   const [userScreenshotSolution, setUserScreenshotSolution] = useState('')
   const [userNavigationSolution, setUserNavigationSolution] = useState('')
   const [userQuerySolution, setUserQuerySolution] = useState('')
+  
+  const userSolutionRef = useRef<HTMLTextAreaElement>(null)
+  const userHtmlSolutionRef = useRef<HTMLTextAreaElement>(null)
+  const userScreenshotSolutionRef = useRef<HTMLTextAreaElement>(null)
+  const userNavigationSolutionRef = useRef<HTMLTextAreaElement>(null)
+  const userQuerySolutionRef = useRef<HTMLTextAreaElement>(null)
+  
+  const checkInputLength = (ref: React.RefObject<HTMLTextAreaElement>, stateLength: number) => {
+    const domLength = ref.current?.value.length || 0
+    return Math.max(stateLength, domLength) > 1000
+  }
+  
+  useEffect(() => {
+    const checkAndUpdateButtons = () => {
+      const textareaButtonPairs = [
+        { textareaRef: userSolutionRef, buttonText: 'Check Solution' },
+        { textareaRef: userHtmlSolutionRef, buttonText: 'Check Structure' },
+        { textareaRef: userScreenshotSolutionRef, buttonText: 'Check Analysis' },
+        { textareaRef: userNavigationSolutionRef, buttonText: 'Check Prompt' },
+        { textareaRef: userQuerySolutionRef, buttonText: 'Check Prompt' }
+      ]
+      
+      textareaButtonPairs.forEach(({ textareaRef, buttonText }) => {
+        if (textareaRef.current) {
+          const textarea = textareaRef.current
+          const container = textarea.closest('div')
+          const button = container?.querySelector(`button:not([type="button"])`) as HTMLButtonElement
+          
+          if (!button) {
+            const allButtons = document.querySelectorAll('button')
+            for (const btn of allButtons) {
+              if (btn.textContent?.includes(buttonText)) {
+                const foundButton = btn as HTMLButtonElement
+                const shouldDisable = textarea.value.length > 1000
+                foundButton.disabled = shouldDisable
+                
+                if (shouldDisable) {
+                  foundButton.style.opacity = '0.5'
+                  foundButton.style.cursor = 'not-allowed'
+                } else {
+                  foundButton.style.opacity = ''
+                  foundButton.style.cursor = ''
+                }
+                break
+              }
+            }
+          } else {
+            const shouldDisable = textarea.value.length > 1000
+            button.disabled = shouldDisable
+            
+            if (shouldDisable) {
+              button.style.opacity = '0.5'
+              button.style.cursor = 'not-allowed'
+            } else {
+              button.style.opacity = ''
+              button.style.cursor = ''
+            }
+          }
+        }
+      })
+    }
+    
+    const interval = setInterval(checkAndUpdateButtons, 100)
+    
+    const refs = [userSolutionRef, userHtmlSolutionRef, userScreenshotSolutionRef, userNavigationSolutionRef, userQuerySolutionRef]
+    refs.forEach(ref => {
+      if (ref.current) {
+        ref.current.addEventListener('input', checkAndUpdateButtons)
+        ref.current.addEventListener('change', checkAndUpdateButtons)
+        ref.current.addEventListener('keyup', checkAndUpdateButtons)
+      }
+    })
+    
+    return () => {
+      clearInterval(interval)
+      refs.forEach(ref => {
+        if (ref.current) {
+          ref.current.removeEventListener('input', checkAndUpdateButtons)
+          ref.current.removeEventListener('change', checkAndUpdateButtons)
+          ref.current.removeEventListener('keyup', checkAndUpdateButtons)
+        }
+      })
+    }
+  }, [])
   const [feedback, setFeedback] = useState('')
   const [htmlFeedback, setHtmlFeedback] = useState('')
   const [screenshotFeedback, setScreenshotFeedback] = useState('')
@@ -617,6 +701,7 @@ function App() {
                                         Fix the HTML code by adding the missing closing tag. Paste your corrected code below:
                                       </p>
                                       <Textarea
+                                        ref={userSolutionRef}
                                         value={userSolution}
                                         onChange={(e) => setUserSolution(e.target.value)}
                                         placeholder="Paste your corrected HTML code here..."
@@ -625,8 +710,13 @@ function App() {
                                       />
                                       <div className="flex gap-3 mt-4">
                                         <Button 
-                                          onClick={() => checkSolution(userSolution)}
-                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                          onClick={() => {
+                                            if (!checkInputLength(userSolutionRef, userSolution.length)) {
+                                              checkSolution(userSolution)
+                                            }
+                                          }}
+                                          disabled={checkInputLength(userSolutionRef, userSolution.length)}
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Check Solution
                                         </Button>
@@ -751,6 +841,7 @@ function App() {
                                         Ask your AI to generate a basic HTML structure, then paste the generated code below:
                                       </p>
                                       <Textarea
+                                        ref={userHtmlSolutionRef}
                                         value={userHtmlSolution}
                                         onChange={(e) => setUserHtmlSolution(e.target.value)}
                                         placeholder="Paste your AI-generated HTML structure here..."
@@ -759,8 +850,13 @@ function App() {
                                       />
                                       <div className="flex gap-3 mt-4">
                                         <Button 
-                                          onClick={() => checkHtmlStructure(userHtmlSolution)}
-                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                          onClick={() => {
+                                            if (!checkInputLength(userHtmlSolutionRef, userHtmlSolution.length)) {
+                                              checkHtmlStructure(userHtmlSolution)
+                                            }
+                                          }}
+                                          disabled={checkInputLength(userHtmlSolutionRef, userHtmlSolution.length)}
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Check Structure
                                         </Button>
@@ -886,6 +982,7 @@ function App() {
                                         After taking a screenshot and asking your AI to analyze it, paste the AI's explanation below:
                                       </p>
                                       <Textarea
+                                        ref={userScreenshotSolutionRef}
                                         value={userScreenshotSolution}
                                         onChange={(e) => setUserScreenshotSolution(e.target.value)}
                                         placeholder="Paste your AI's analysis and solution here..."
@@ -894,8 +991,13 @@ function App() {
                                       />
                                       <div className="flex gap-3 mt-4">
                                         <Button 
-                                          onClick={() => checkScreenshotSolution(userScreenshotSolution)}
-                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                          onClick={() => {
+                                            if (!checkInputLength(userScreenshotSolutionRef, userScreenshotSolution.length)) {
+                                              checkScreenshotSolution(userScreenshotSolution)
+                                            }
+                                          }}
+                                          disabled={checkInputLength(userScreenshotSolutionRef, userScreenshotSolution.length)}
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Check Analysis
                                         </Button>
@@ -1035,6 +1137,7 @@ function App() {
                                         Write an effective AI prompt to get navigation help for the scenario above. Include your current location, what you see, your goal, and ask for next steps:
                                       </p>
                                       <Textarea
+                                        ref={userNavigationSolutionRef}
                                         value={userNavigationSolution}
                                         onChange={(e) => setUserNavigationSolution(e.target.value)}
                                         placeholder="Write your AI prompt here... (e.g., 'I'm in Google Cloud Console dashboard for project...')"
@@ -1043,8 +1146,13 @@ function App() {
                                       />
                                       <div className="flex gap-3 mt-4">
                                         <Button 
-                                          onClick={() => checkNavigationSolution(userNavigationSolution)}
-                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                          onClick={() => {
+                                            if (!checkInputLength(userNavigationSolutionRef, userNavigationSolution.length)) {
+                                              checkNavigationSolution(userNavigationSolution)
+                                            }
+                                          }}
+                                          disabled={checkInputLength(userNavigationSolutionRef, userNavigationSolution.length)}
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Check Prompt
                                         </Button>
@@ -1185,6 +1293,7 @@ function App() {
                                         Write an effective AI prompt to get the exact terminal command syntax for the scenario above. Include your task, file types, operating system, and ask for specific commands:
                                       </p>
                                       <Textarea
+                                        ref={userQuerySolutionRef}
                                         value={userQuerySolution}
                                         onChange={(e) => setUserQuerySolution(e.target.value)}
                                         placeholder="Write your AI prompt here... (e.g., 'I need a terminal command to search for...')"
@@ -1193,8 +1302,13 @@ function App() {
                                       />
                                       <div className="flex gap-3 mt-4">
                                         <Button 
-                                          onClick={() => checkQuerySolution(userQuerySolution)}
-                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                          onClick={() => {
+                                            if (!checkInputLength(userQuerySolutionRef, userQuerySolution.length)) {
+                                              checkQuerySolution(userQuerySolution)
+                                            }
+                                          }}
+                                          disabled={checkInputLength(userQuerySolutionRef, userQuerySolution.length)}
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Check Prompt
                                         </Button>
