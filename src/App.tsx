@@ -15,10 +15,13 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [lessonDialogOpen, setLessonDialogOpen] = useState(false)
   const [lesson2DialogOpen, setLesson2DialogOpen] = useState(false)
+  const [lesson3DialogOpen, setLesson3DialogOpen] = useState(false)
   const [userSolution, setUserSolution] = useState('')
   const [userHtmlSolution, setUserHtmlSolution] = useState('')
+  const [userScreenshotSolution, setUserScreenshotSolution] = useState('')
   const [feedback, setFeedback] = useState('')
   const [htmlFeedback, setHtmlFeedback] = useState('')
+  const [screenshotFeedback, setScreenshotFeedback] = useState('')
   const [completedLessons, setCompletedLessons] = useState<number[]>([])
 
   const lessons = [
@@ -123,6 +126,39 @@ function App() {
     ]
   }
 
+  const screenshotAnalysisExample = {
+    title: "CSS Styling Error - Button Not Visible",
+    problemDescription: "A button element exists in the HTML but is not visible on the webpage due to CSS styling issues.",
+    problemCode: `<!DOCTYPE html>
+<html>
+<head>
+    <title>My Website</title>
+    <style>
+        .hidden-button {
+            display: none;
+            background-color: blue;
+            color: white;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to My Site</h1>
+    <button class="hidden-button">Click Me</button>
+    <p>Why can't I see the button?</p>
+</body>
+</html>`,
+    expectedSolution: "The button has 'display: none;' in its CSS which makes it invisible. Remove this property or change it to 'display: block;' or 'display: inline-block;' to make the button visible.",
+    steps: [
+      "1. Open the webpage and notice the button is missing despite being in the HTML",
+      "2. Take a screenshot of the webpage showing the missing button",
+      "3. Upload the screenshot to your AI app (ChatGPT, Claude, etc.) on your phone",
+      "4. Ask: 'I have a button in my HTML but it's not showing up. What could be wrong?'",
+      "5. Email the AI's response to yourself and paste the solution below",
+      "6. The AI should identify the 'display: none;' CSS property as the issue"
+    ]
+  }
+
   const checkSolution = (solution: string) => {
     const normalizedSolution = solution.toLowerCase().replace(/\s+/g, ' ').trim()
     const hasClosingDiv = normalizedSolution.includes('</div>')
@@ -155,6 +191,24 @@ function App() {
       setHtmlFeedback('⚠️ Good start! You have some HTML structure, but make sure to include both <head> and <body> sections within <html> tags.')
     } else {
       setHtmlFeedback('⚠️ Please generate a basic HTML structure with <html>, <head>, and <body> tags. Ask your AI to create a simple HTML template!')
+    }
+  }
+
+  const checkScreenshotSolution = (solution: string) => {
+    const normalizedSolution = solution.toLowerCase().trim()
+    const hasDisplayNone = normalizedSolution.includes('display') && normalizedSolution.includes('none')
+    const hasCssIssue = normalizedSolution.includes('css') || normalizedSolution.includes('style')
+    const hasVisibility = normalizedSolution.includes('visible') || normalizedSolution.includes('hidden') || normalizedSolution.includes('show')
+    const hasDisplayProperty = normalizedSolution.includes('display') && (normalizedSolution.includes('block') || normalizedSolution.includes('inline'))
+    
+    if (hasDisplayNone && (hasDisplayProperty || hasVisibility)) {
+      setScreenshotFeedback('✅ Excellent! You correctly identified that the "display: none;" CSS property is hiding the button and provided a solution to make it visible. Great job using AI to analyze the screenshot!')
+    } else if (hasDisplayNone || (hasCssIssue && hasVisibility)) {
+      setScreenshotFeedback('✅ Good work! You identified a CSS visibility issue. The specific problem is "display: none;" which completely hides the button from view.')
+    } else if (hasCssIssue) {
+      setScreenshotFeedback('⚠️ You\'re on the right track mentioning CSS! Look more specifically at the display property in the button\'s CSS styling.')
+    } else {
+      setScreenshotFeedback('⚠️ Try asking your AI to analyze what CSS properties might be hiding the button. Focus on properties that control element visibility.')
     }
   }
 
@@ -647,6 +701,140 @@ function App() {
                                         <p>• <strong>Accuracy:</strong> AI ensures proper DOCTYPE, meta tags, and semantic structure</p>
                                         <p>• <strong>Best Practices:</strong> Get modern HTML5 standards automatically included</p>
                                         <p>• <strong>Consistency:</strong> Maintain the same structure across all your projects</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                              </Dialog>
+                              <Button 
+                                size="sm" 
+                                onClick={() => {
+                                  if (!completedLessons.includes(lesson.id)) {
+                                    setCompletedLessons([...completedLessons, lesson.id])
+                                  }
+                                }}
+                                className={`${
+                                  completedLessons.includes(lesson.id) 
+                                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600' 
+                                    : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
+                                } text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
+                                disabled={completedLessons.includes(lesson.id)}
+                              >
+                                {completedLessons.includes(lesson.id) ? '✅ Completed' : 'Complete Lesson'}
+                              </Button>
+                            </div>
+                          )}
+                          {lesson.id === 3 && (
+                            <div className="flex gap-2 mt-2">
+                              <Dialog open={lesson3DialogOpen} onOpenChange={setLesson3DialogOpen}>
+                                <DialogTrigger asChild>
+                                  <Button 
+                                    size="sm" 
+                                    className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                                  >
+                                    <Play className="mr-2 h-4 w-4" />
+                                    Start Lesson
+                                  </Button>
+                                </DialogTrigger>
+                              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900 to-slate-800 border-purple-500/30 text-white">
+                                <DialogHeader>
+                                  <DialogTitle className="text-2xl bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                                    Interactive Lesson: {lesson.title}
+                                  </DialogTitle>
+                                </DialogHeader>
+                                
+                                <div className="grid lg:grid-cols-2 gap-6 mt-6">
+                                  <div className="space-y-6">
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-orange-500/30">
+                                      <h3 className="text-lg font-semibold text-orange-400 mb-3">
+                                        {screenshotAnalysisExample.title}
+                                      </h3>
+                                      <div className="bg-orange-900/20 rounded p-3 mb-4">
+                                        <p className="text-orange-300 text-sm font-medium mb-2">Problem Description:</p>
+                                        <p className="text-orange-200 text-sm">
+                                          {screenshotAnalysisExample.problemDescription}
+                                        </p>
+                                      </div>
+                                      <div className="bg-slate-900/50 rounded p-3">
+                                        <h4 className="text-sm font-medium text-gray-300 mb-2">Problem Code:</h4>
+                                        <pre className="text-xs text-gray-300 overflow-x-auto">
+                                          <code>{screenshotAnalysisExample.problemCode}</code>
+                                        </pre>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-500/30">
+                                      <h3 className="text-lg font-semibold text-cyan-400 mb-3">
+                                        Screenshot Analysis Process
+                                      </h3>
+                                      <ol className="space-y-2">
+                                        {screenshotAnalysisExample.steps.map((step, index) => (
+                                          <li key={index} className="text-sm text-gray-300 leading-relaxed">
+                                            {step}
+                                          </li>
+                                        ))}
+                                      </ol>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="space-y-6">
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-500/30">
+                                      <h3 className="text-lg font-semibold text-purple-400 mb-3">
+                                        AI Analysis Result
+                                      </h3>
+                                      <p className="text-sm text-gray-300 mb-4">
+                                        After taking a screenshot and asking your AI to analyze it, paste the AI's explanation below:
+                                      </p>
+                                      <Textarea
+                                        value={userScreenshotSolution}
+                                        onChange={(e) => setUserScreenshotSolution(e.target.value)}
+                                        placeholder="Paste your AI's analysis and solution here..."
+                                        className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
+                                      />
+                                      <div className="flex gap-3 mt-4">
+                                        <Button 
+                                          onClick={() => checkScreenshotSolution(userScreenshotSolution)}
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                        >
+                                          Check Analysis
+                                        </Button>
+                                        <Button 
+                                          variant="outline"
+                                          onClick={() => {
+                                            setUserScreenshotSolution('')
+                                            setScreenshotFeedback('')
+                                          }}
+                                          className="border-slate-600 text-gray-300 hover:bg-slate-700"
+                                        >
+                                          Reset
+                                        </Button>
+                                      </div>
+                                      
+                                      {screenshotFeedback && (
+                                        <div className={`mt-4 p-3 rounded-lg ${
+                                          screenshotFeedback.startsWith('✅') 
+                                            ? 'bg-green-900/20 border border-green-500/30' 
+                                            : 'bg-yellow-900/20 border border-yellow-500/30'
+                                        }`}>
+                                          <p className={`text-sm ${
+                                            screenshotFeedback.startsWith('✅') ? 'text-green-300' : 'text-yellow-300'
+                                          }`}>
+                                            {screenshotFeedback}
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+                                    
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-emerald-500/30">
+                                      <h3 className="text-lg font-semibold text-emerald-400 mb-3">
+                                        Why Screenshot Analysis Works
+                                      </h3>
+                                      <div className="space-y-2 text-sm text-gray-300">
+                                        <p>• <strong>Visual Context:</strong> AI can see exactly what you're seeing on screen</p>
+                                        <p>• <strong>Mobile Convenience:</strong> Take screenshots on your phone and get instant help</p>
+                                        <p>• <strong>Complex Issues:</strong> Perfect for layout problems, styling issues, and UI bugs</p>
+                                        <p>• <strong>Learning Tool:</strong> Understand not just the fix, but why the problem occurred</p>
                                       </div>
                                     </div>
                                   </div>
