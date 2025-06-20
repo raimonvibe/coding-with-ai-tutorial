@@ -1564,10 +1564,16 @@ const learningExample = {
                 Empowering the next generation of developers to code smarter, faster, and more efficiently with cutting-edge AI assistance.
               </p>
               <div className="flex justify-center">
-                <Button variant="outline" size="sm" className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-slate-900 transition-all duration-300">
-                  <Code className="h-4 w-4 mr-2" />
-                  GitHub
-                </Button>
+                <a href="https://github.com/raimonvibe" target="_blank" rel="noopener noreferrer">
+  <Button
+    variant="outline"
+    size="sm"
+    className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-slate-900 transition-all duration-300"
+  >
+    <Code className="h-4 w-4 mr-2" />
+    GitHub
+  </Button>
+</a>
               </div>
             </div>
           </div>
