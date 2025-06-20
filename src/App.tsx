@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Brain, Code, Zap, CheckCircle, Menu, X, Play, BookOpen, Target, Sparkles, Rocket, Star } from 'lucide-react'
+import { Brain, Code, Zap, Menu, X, Play, BookOpen, Target, Sparkles, Rocket, Star } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
 import { Badge } from './components/ui/badge'
@@ -8,57 +8,45 @@ import './App.css'
 
 function App() {
 
-  const [completedLessons, setCompletedLessons] = useState<number[]>([])
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const lessons = [
     {
       id: 1,
-      title: "Foutmeldingen Stap voor Stap Oplossen",
-      description: "Je lost stap voor stap foutmeldingen op door de errorcodes te kopiëren en aan AI te vragen hoe je ze kunt fixen. Zo leer je ook meteen wat het probleem was.",
-      duration: "5 min",
-      difficulty: "Beginner",
-      topics: ["Error codes", "Debugging", "Leren van fouten"]
+      title: "Solving Error Messages Step by Step",
+      description: "You solve error messages step by step by copying error codes and asking AI how to fix them. This way you also immediately learn what the problem was.",
+      topics: ["Error codes", "Debugging", "Learning from errors"]
     },
     {
       id: 2,
-      title: "Basis HTML-Structuur Genereren",
-      description: "Je laat AI een basis-HTML-structuur genereren, met de head en body, zodat je sneller kunt starten met het bouwen van een webpagina.",
-      duration: "3 min",
-      difficulty: "Beginner",
-      topics: ["HTML structuur", "Snelle start", "Web development"]
+      title: "Generate Basic HTML Structure",
+      description: "You let AI generate a basic HTML structure, with head and body, so you can start building a webpage faster.",
+      topics: ["HTML structure", "Quick start", "Web development"]
     },
     {
       id: 3,
-      title: "Screenshots Analyseren met AI",
-      description: "Je maakt screenshots van foutmeldingen of uitleg in webservices, en vraagt AI wat er aan de hand is en wat je moet doen. Zo krijg je gerichte hulp.",
-      duration: "4 min",
-      difficulty: "Beginner",
-      topics: ["Visual debugging", "Screenshot analyse", "Gerichte hulp"]
+      title: "Analyze Screenshots with AI",
+      description: "You take screenshots of error messages or explanations in web services, and ask AI what's going on and what you should do. This gives you targeted help.",
+      topics: ["Visual debugging", "Screenshot analysis", "Targeted help"]
     },
     {
       id: 4,
-      title: "Navigeren in Complexe Tools",
-      description: "Bij complexe tools zoals de Google Cloud Console navigeer je met hulp van AI. Je vertelt waar je zit en vraagt wat je volgende stap moet zijn, om de juiste instellingen te vinden.",
-      duration: "7 min",
-      difficulty: "Intermediate",
-      topics: ["Cloud platforms", "Navigatie hulp", "Tool mastery"]
+      title: "Navigate Complex Tools",
+      description: "With complex tools like the Google Cloud Console, you navigate with AI's help. You tell where you are and ask what your next step should be to find the right settings.",
+      topics: ["Cloud platforms", "Navigation help", "Tool mastery"]
     },
     {
       id: 5,
-      title: "Syntax en Commando's Opvragen",
-      description: "Als je de juiste syntax even niet weet – bijvoorbeeld in de terminal of bij het schrijven van code – dan vraag je AI om de juiste commando's of voorbeelden.",
-      duration: "2 min",
-      difficulty: "Beginner",
-      topics: ["Syntax hulp", "Terminal commands", "Code voorbeelden"]
+      title: "Query Syntax and Commands",
+      description: "When you don't know the right syntax - for example in the terminal or when writing code - you ask AI for the right commands or examples.",
+      topics: ["Syntax help", "Terminal commands", "Code examples"]
     },
     {
       id: 6,
-      title: "AI als Leermaatje en Gids",
-      description: "Je gebruikt AI dus niet alleen als probleemoplosser, maar ook als leermaatje, gids en startmotor in je projecten. Echt een hele efficiënte en slimme werkwijze.",
-      duration: "10 min",
-      difficulty: "Intermediate",
-      topics: ["Workflow optimalisatie", "Leerpartner", "Efficiënt werken"]
+      title: "AI as Learning Partner and Guide",
+      description: "You don't just use AI as a problem solver, but also as a learning partner, guide and starter motor in your projects. Really an efficient and smart workflow.",
+      topics: ["Workflow optimization", "Learning partner", "Efficient working"]
     }
   ]
 
@@ -86,13 +74,9 @@ function App() {
     }
   ]
 
-  const markLessonComplete = (lessonId: number) => {
-    if (!completedLessons.includes(lessonId)) {
-      setCompletedLessons([...completedLessons, lessonId])
-    }
-  }
 
-  const progressPercentage = (completedLessons.length / lessons.length) * 100
+
+  const progressPercentage = 0
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/10 to-slate-900 text-white">
@@ -160,34 +144,34 @@ function App() {
           <div className="mb-8">
             <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full border border-cyan-400/30 mb-6">
               <Star className="h-4 w-4 text-yellow-400 mr-2" />
-              <span className="text-sm font-medium text-cyan-300">De Toekomst van Programmeren met AI</span>
+              <span className="text-sm font-medium text-cyan-300">The Future of Programming with AI</span>
             </div>
           </div>
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight">
             <span className="bg-gradient-to-r from-cyan-400 via-purple-500 via-pink-500 to-emerald-400 bg-clip-text text-transparent animate-pulse">
-              Slimme AI Tips
+              Smart AI Tips
             </span>
             <br />
             <span className="bg-gradient-to-r from-emerald-400 via-cyan-500 to-purple-500 bg-clip-text text-transparent">
-              voor Programmeurs
+              for Programmers
             </span>
           </h1>
           
           <p className="text-lg sm:text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Ontdek hoe je AI slim kunt inzetten bij het programmeren. Onze praktische tips leren je hoe je kunstmatige intelligentie gebruikt om een 
-            <span className="text-cyan-400 font-semibold"> 10x efficiëntere</span> en 
-            <span className="text-emerald-400 font-semibold"> effectievere programmeur</span> te worden.
+            Discover how to use AI effectively in programming. Our practical tips teach you how to use artificial intelligence to become a 
+            <span className="text-cyan-400 font-semibold"> 10x more efficient</span> and 
+            <span className="text-emerald-400 font-semibold"> effective programmer</span>.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Button size="lg" className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/40 transition-all duration-300 transform hover:scale-105 px-8 py-4 text-lg">
               <Play className="mr-3 h-6 w-6" />
-              Begin Nu
+              Get Started
             </Button>
             <Button size="lg" variant="outline" className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105 px-8 py-4 text-lg">
               <BookOpen className="mr-3 h-6 w-6" />
-              Bekijk Tips
+              View Tips
             </Button>
           </div>
           
@@ -200,10 +184,10 @@ function App() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-              Waarom AI Gebruiken bij Programmeren?
+              Why Use AI in Programming?
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Ontdek de revolutionaire aanpak die de manier waarop ontwikkelaars leren en bouwen transformeert.
+              Discover the revolutionary approach that's transforming how developers learn and build.
             </p>
           </div>
           
@@ -258,7 +242,7 @@ function App() {
                 <div className="flex justify-between items-center">
                   <span className="text-gray-300 text-lg">Completed Lessons</span>
                   <div className="flex items-center space-x-2">
-                    <span className="text-2xl font-bold text-emerald-400">{completedLessons.length}</span>
+                    <span className="text-2xl font-bold text-emerald-400">0</span>
                     <span className="text-gray-400">/</span>
                     <span className="text-xl text-gray-300">{lessons.length}</span>
                   </div>
@@ -278,28 +262,19 @@ function App() {
                     <div className="text-sm text-gray-400">Complete</div>
                   </div>
                   <div className="text-center p-4 bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/20">
-                    <div className="text-2xl font-bold text-purple-400">{lessons.length - completedLessons.length}</div>
+                    <div className="text-2xl font-bold text-purple-400">{lessons.length}</div>
                     <div className="text-sm text-gray-400">Remaining</div>
                   </div>
                   <div className="text-center p-4 bg-gradient-to-br from-amber-900/30 to-orange-900/30 rounded-xl border border-amber-500/20">
                     <div className="text-2xl font-bold text-amber-400">
-                      {completedLessons.length > 0 ? Math.round((completedLessons.length / lessons.length) * 100) : 0}
+                      0
                     </div>
                     <div className="text-sm text-gray-400">Score</div>
                   </div>
                 </div>
                 
                 <div className="text-center mt-6">
-                  {progressPercentage === 100 ? (
-                    <p className="text-lg text-emerald-400 font-semibold flex items-center justify-center">
-                      <Star className="mr-2 h-5 w-5 text-yellow-400" />
-                      🎉 Congratulations! You've mastered AI programming!
-                    </p>
-                  ) : (
-                    <p className="text-gray-400">
-                      Keep going! You're <span className="text-cyan-400 font-semibold">{Math.round(progressPercentage)}%</span> of the way to becoming an AI programming expert.
-                    </p>
-                  )}
+                  <p className="text-gray-400">Keep learning to unlock your full potential!</p>
                 </div>
               </div>
             </CardContent>
@@ -312,10 +287,10 @@ function App() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-              Slimme AI Tips voor Programmeurs
+              Smart AI Tips for Programmers
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Ontdek hoe je AI op meerdere slimme manieren kunt gebruiken bij het programmeren om efficiënter te werken
+              Discover how to use AI in multiple smart ways when programming to work more efficiently
             </p>
           </div>
           
@@ -329,23 +304,14 @@ function App() {
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                     <div className="flex-1">
                       <div className="flex items-center gap-4 mb-4">
-                        <div className={`flex items-center justify-center w-12 h-12 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 group-hover:scale-110 ${
-                          lesson.difficulty === 'Beginner' ? 'bg-gradient-to-br from-emerald-500 to-green-600 text-white' :
-                          lesson.difficulty === 'Intermediate' ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white' :
-                          'bg-gradient-to-br from-red-500 to-pink-600 text-white'
-                        }`}>
+                        <div className="flex items-center justify-center w-12 h-12 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 group-hover:scale-110 bg-gradient-to-br from-cyan-500 to-purple-600 text-white">
                           {lesson.id}
                         </div>
                         <div className="flex-1">
                           <CardTitle className="text-white text-xl lg:text-2xl mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 group-hover:bg-clip-text transition-all duration-300">
                             {lesson.title}
                           </CardTitle>
-                          {completedLessons.includes(lesson.id) && (
-                            <div className="flex items-center text-emerald-400">
-                              <CheckCircle className="h-5 w-5 mr-2" />
-                              <span className="text-sm font-medium">Completed</span>
-                            </div>
-                          )}
+
                         </div>
                       </div>
                       
@@ -353,21 +319,7 @@ function App() {
                         {lesson.description}
                       </CardDescription>
                       
-                      <div className="flex flex-wrap gap-3 mb-6">
-                        <Badge variant="secondary" className="bg-gradient-to-r from-slate-600 to-slate-700 text-gray-200 px-3 py-1 text-sm font-medium">
-                          ⏱️ {lesson.duration}
-                        </Badge>
-                        <Badge 
-                          variant="secondary" 
-                          className={`px-3 py-1 text-sm font-medium text-white ${
-                            lesson.difficulty === 'Beginner' ? 'bg-gradient-to-r from-emerald-500 to-green-600' :
-                            lesson.difficulty === 'Intermediate' ? 'bg-gradient-to-r from-amber-500 to-orange-600' :
-                            'bg-gradient-to-r from-red-500 to-pink-600'
-                          }`}
-                        >
-                          📊 {lesson.difficulty}
-                        </Badge>
-                      </div>
+
                       
                       <div className="flex flex-wrap gap-2">
                         {lesson.topics.map((topic, topicIndex) => (
@@ -382,26 +334,7 @@ function App() {
                       </div>
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:min-w-[140px]">
-                      <Button 
-                        size="lg"
-                        className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-105 px-6 py-3"
-                      >
-                        <Play className="mr-2 h-5 w-5" />
-                        Start Lesson
-                      </Button>
-                      {!completedLessons.includes(lesson.id) && (
-                        <Button 
-                          size="lg"
-                          variant="outline"
-                          className="border-2 border-emerald-500 text-emerald-400 hover:bg-emerald-500 hover:text-slate-900 hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300 transform hover:scale-105 px-6 py-3"
-                          onClick={() => markLessonComplete(lesson.id)}
-                        >
-                          <CheckCircle className="mr-2 h-5 w-5" />
-                          Mark Complete
-                        </Button>
-                      )}
-                    </div>
+
                   </div>
                 </CardHeader>
               </Card>
@@ -508,7 +441,7 @@ function App() {
           <div className="border-t border-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-400 text-sm mb-4 md:mb-0">
-                &copy; 2024 AI Tips Academy. All rights reserved. Built with ❤️ and AI.
+                &copy; {new Date().getFullYear()} AI Tips Academy. All rights reserved. Built with ❤️ by Raimon @ <a href="https://raimonvibe.eu" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors">raimonvibe</a>.
               </p>
 
             </div>
