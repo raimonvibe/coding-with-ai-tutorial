@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { Brain, Code, Zap, Menu, X, BookOpen, Sparkles, Star, Play, Target } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
@@ -30,83 +30,28 @@ function App() {
   const userNavigationSolutionRef = useRef<HTMLTextAreaElement>(null)
   const userQuerySolutionRef = useRef<HTMLTextAreaElement>(null)
   
-  const checkInputLength = (ref: React.RefObject<HTMLTextAreaElement>, stateLength: number) => {
-    const domLength = ref.current?.value.length || 0
-    return Math.max(stateLength, domLength) > 1000
-  }
+  const [userSolutionCount, setUserSolutionCount] = useState(0)
+  const [userHtmlSolutionCount, setUserHtmlSolutionCount] = useState(0)
+  const [userScreenshotSolutionCount, setUserScreenshotSolutionCount] = useState(0)
+  const [userNavigationSolutionCount, setUserNavigationSolutionCount] = useState(0)
+  const [userQuerySolutionCount, setUserQuerySolutionCount] = useState(0)
   
-  useEffect(() => {
-    const checkAndUpdateButtons = () => {
-      const textareaButtonPairs = [
-        { textareaRef: userSolutionRef, buttonText: 'Check Solution' },
-        { textareaRef: userHtmlSolutionRef, buttonText: 'Check Structure' },
-        { textareaRef: userScreenshotSolutionRef, buttonText: 'Check Analysis' },
-        { textareaRef: userNavigationSolutionRef, buttonText: 'Check Prompt' },
-        { textareaRef: userQuerySolutionRef, buttonText: 'Check Prompt' }
-      ]
-      
-      textareaButtonPairs.forEach(({ textareaRef, buttonText }) => {
-        if (textareaRef.current) {
-          const textarea = textareaRef.current
-          const container = textarea.closest('div')
-          const button = container?.querySelector(`button:not([type="button"])`) as HTMLButtonElement
-          
-          if (!button) {
-            const allButtons = document.querySelectorAll('button')
-            for (const btn of allButtons) {
-              if (btn.textContent?.includes(buttonText)) {
-                const foundButton = btn as HTMLButtonElement
-                const shouldDisable = textarea.value.length > 1000
-                foundButton.disabled = shouldDisable
-                
-                if (shouldDisable) {
-                  foundButton.style.opacity = '0.5'
-                  foundButton.style.cursor = 'not-allowed'
-                } else {
-                  foundButton.style.opacity = ''
-                  foundButton.style.cursor = ''
-                }
-                break
-              }
-            }
-          } else {
-            const shouldDisable = textarea.value.length > 1000
-            button.disabled = shouldDisable
-            
-            if (shouldDisable) {
-              button.style.opacity = '0.5'
-              button.style.cursor = 'not-allowed'
-            } else {
-              button.style.opacity = ''
-              button.style.cursor = ''
-            }
-          }
-        }
-      })
-    }
+  const renderCharacterCounter = (count: number, maxLength: number = 1000) => {
+    const isNearLimit = count > maxLength * 0.8
+    const isOverLimit = count > maxLength
     
-    const interval = setInterval(checkAndUpdateButtons, 100)
-    
-    const refs = [userSolutionRef, userHtmlSolutionRef, userScreenshotSolutionRef, userNavigationSolutionRef, userQuerySolutionRef]
-    refs.forEach(ref => {
-      if (ref.current) {
-        ref.current.addEventListener('input', checkAndUpdateButtons)
-        ref.current.addEventListener('change', checkAndUpdateButtons)
-        ref.current.addEventListener('keyup', checkAndUpdateButtons)
-      }
-    })
-    
-    return () => {
-      clearInterval(interval)
-      refs.forEach(ref => {
-        if (ref.current) {
-          ref.current.removeEventListener('input', checkAndUpdateButtons)
-          ref.current.removeEventListener('change', checkAndUpdateButtons)
-          ref.current.removeEventListener('keyup', checkAndUpdateButtons)
-        }
-      })
-    }
-  }, [])
+    return (
+      <div className={`text-sm mt-2 ${isOverLimit ? 'text-red-400' : isNearLimit ? 'text-yellow-400' : 'text-gray-400'}`}>
+        {isOverLimit ? (
+          <span>😅 Oops! You've exceeded the {maxLength} character limit by {count - maxLength} characters. Please shorten your text.</span>
+        ) : isNearLimit ? (
+          <span>⚠️ You're getting close! {maxLength - count} characters remaining.</span>
+        ) : (
+          <span>📝 {count}/{maxLength} characters</span>
+        )}
+      </div>
+    )
+  }
   const [feedback, setFeedback] = useState('')
   const [htmlFeedback, setHtmlFeedback] = useState('')
   const [screenshotFeedback, setScreenshotFeedback] = useState('')
@@ -703,19 +648,19 @@ function App() {
                                       <Textarea
                                         ref={userSolutionRef}
                                         value={userSolution}
-                                        onChange={(e) => setUserSolution(e.target.value)}
+                                        onChange={(e) => {
+                                          setUserSolution(e.target.value)
+                                          setUserSolutionCount(e.target.value.length)
+                                        }}
                                         placeholder="Paste your corrected HTML code here..."
                                         maxLength={1000}
                                         className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
                                       />
+                                      {renderCharacterCounter(userSolutionCount)}
                                       <div className="flex gap-3 mt-4">
                                         <Button 
-                                          onClick={() => {
-                                            if (!checkInputLength(userSolutionRef, userSolution.length)) {
-                                              checkSolution(userSolution)
-                                            }
-                                          }}
-                                          disabled={checkInputLength(userSolutionRef, userSolution.length)}
+                                          onClick={() => checkSolution(userSolution)}
+                                          disabled={userSolutionCount > 1000}
                                           className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Check Solution
@@ -843,19 +788,19 @@ function App() {
                                       <Textarea
                                         ref={userHtmlSolutionRef}
                                         value={userHtmlSolution}
-                                        onChange={(e) => setUserHtmlSolution(e.target.value)}
+                                        onChange={(e) => {
+                                          setUserHtmlSolution(e.target.value)
+                                          setUserHtmlSolutionCount(e.target.value.length)
+                                        }}
                                         placeholder="Paste your AI-generated HTML structure here..."
                                         maxLength={1000}
                                         className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
                                       />
+                                      {renderCharacterCounter(userHtmlSolutionCount)}
                                       <div className="flex gap-3 mt-4">
                                         <Button 
-                                          onClick={() => {
-                                            if (!checkInputLength(userHtmlSolutionRef, userHtmlSolution.length)) {
-                                              checkHtmlStructure(userHtmlSolution)
-                                            }
-                                          }}
-                                          disabled={checkInputLength(userHtmlSolutionRef, userHtmlSolution.length)}
+                                          onClick={() => checkHtmlStructure(userHtmlSolution)}
+                                          disabled={userHtmlSolutionCount > 1000}
                                           className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Check Structure
@@ -984,19 +929,19 @@ function App() {
                                       <Textarea
                                         ref={userScreenshotSolutionRef}
                                         value={userScreenshotSolution}
-                                        onChange={(e) => setUserScreenshotSolution(e.target.value)}
+                                        onChange={(e) => {
+                                          setUserScreenshotSolution(e.target.value)
+                                          setUserScreenshotSolutionCount(e.target.value.length)
+                                        }}
                                         placeholder="Paste your AI's analysis and solution here..."
                                         maxLength={1000}
                                         className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
                                       />
+                                      {renderCharacterCounter(userScreenshotSolutionCount)}
                                       <div className="flex gap-3 mt-4">
                                         <Button 
-                                          onClick={() => {
-                                            if (!checkInputLength(userScreenshotSolutionRef, userScreenshotSolution.length)) {
-                                              checkScreenshotSolution(userScreenshotSolution)
-                                            }
-                                          }}
-                                          disabled={checkInputLength(userScreenshotSolutionRef, userScreenshotSolution.length)}
+                                          onClick={() => checkScreenshotSolution(userScreenshotSolution)}
+                                          disabled={userScreenshotSolutionCount > 1000}
                                           className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Check Analysis
@@ -1139,19 +1084,19 @@ function App() {
                                       <Textarea
                                         ref={userNavigationSolutionRef}
                                         value={userNavigationSolution}
-                                        onChange={(e) => setUserNavigationSolution(e.target.value)}
+                                        onChange={(e) => {
+                                          setUserNavigationSolution(e.target.value)
+                                          setUserNavigationSolutionCount(e.target.value.length)
+                                        }}
                                         placeholder="Write your AI prompt here... (e.g., 'I'm in Google Cloud Console dashboard for project...')"
                                         maxLength={1000}
                                         className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
                                       />
+                                      {renderCharacterCounter(userNavigationSolutionCount)}
                                       <div className="flex gap-3 mt-4">
                                         <Button 
-                                          onClick={() => {
-                                            if (!checkInputLength(userNavigationSolutionRef, userNavigationSolution.length)) {
-                                              checkNavigationSolution(userNavigationSolution)
-                                            }
-                                          }}
-                                          disabled={checkInputLength(userNavigationSolutionRef, userNavigationSolution.length)}
+                                          onClick={() => checkNavigationSolution(userNavigationSolution)}
+                                          disabled={userNavigationSolutionCount > 1000}
                                           className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Check Prompt
@@ -1295,19 +1240,19 @@ function App() {
                                       <Textarea
                                         ref={userQuerySolutionRef}
                                         value={userQuerySolution}
-                                        onChange={(e) => setUserQuerySolution(e.target.value)}
+                                        onChange={(e) => {
+                                          setUserQuerySolution(e.target.value)
+                                          setUserQuerySolutionCount(e.target.value.length)
+                                        }}
                                         placeholder="Write your AI prompt here... (e.g., 'I need a terminal command to search for...')"
                                         maxLength={1000}
                                         className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
                                       />
+                                      {renderCharacterCounter(userQuerySolutionCount)}
                                       <div className="flex gap-3 mt-4">
                                         <Button 
-                                          onClick={() => {
-                                            if (!checkInputLength(userQuerySolutionRef, userQuerySolution.length)) {
-                                              checkQuerySolution(userQuerySolution)
-                                            }
-                                          }}
-                                          disabled={checkInputLength(userQuerySolutionRef, userQuerySolution.length)}
+                                          onClick={() => checkQuerySolution(userQuerySolution)}
+                                          disabled={userQuerySolutionCount > 1000}
                                           className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Check Prompt
