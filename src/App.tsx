@@ -17,14 +17,17 @@ function App() {
   const [lesson2DialogOpen, setLesson2DialogOpen] = useState(false)
   const [lesson3DialogOpen, setLesson3DialogOpen] = useState(false)
   const [lesson4DialogOpen, setLesson4DialogOpen] = useState(false)
+  const [lesson5DialogOpen, setLesson5DialogOpen] = useState(false)
   const [userSolution, setUserSolution] = useState('')
   const [userHtmlSolution, setUserHtmlSolution] = useState('')
   const [userScreenshotSolution, setUserScreenshotSolution] = useState('')
   const [userNavigationSolution, setUserNavigationSolution] = useState('')
+  const [userQuerySolution, setUserQuerySolution] = useState('')
   const [feedback, setFeedback] = useState('')
   const [htmlFeedback, setHtmlFeedback] = useState('')
   const [screenshotFeedback, setScreenshotFeedback] = useState('')
   const [navigationFeedback, setNavigationFeedback] = useState('')
+  const [queryFeedback, setQueryFeedback] = useState('')
   const [completedLessons, setCompletedLessons] = useState<number[]>([])
 
   const lessons = [
@@ -184,6 +187,33 @@ function App() {
     ]
   }
 
+  const queryExample = {
+    title: "Need Terminal Command for File Operations - Getting AI Syntax Help",
+    scenario: "You want to find all JavaScript files in your project that contain the word 'useState' but don't know the right terminal command syntax.",
+    task: "Find all .js and .jsx files containing 'useState' in the current directory and subdirectories",
+    goodPromptExample: "I need a terminal command to search for all JavaScript files (.js and .jsx) in my current directory and all subdirectories that contain the text 'useState'. I'm on a Mac using bash. What's the exact command I should use?",
+    badExamples: [
+      "How to search files?",
+      "Find useState",
+      "Terminal command help",
+      "Search JavaScript files"
+    ],
+    correctCommand: "grep -r --include='*.js' --include='*.jsx' 'useState' .",
+    alternativeCommands: [
+      "find . -name '*.js' -o -name '*.jsx' | xargs grep 'useState'",
+      "ag 'useState' --js",
+      "rg 'useState' -t js"
+    ],
+    steps: [
+      "1. Clearly state what you want to accomplish (search, copy, move, etc.)",
+      "2. Specify the file types or patterns you're working with",
+      "3. Mention your operating system (Mac, Windows, Linux)",
+      "4. Include any specific requirements (recursive, case-sensitive, etc.)",
+      "5. Ask for the exact command syntax",
+      "6. Request alternatives if available (different tools, approaches)"
+    ]
+  }
+
   const checkSolution = (solution: string) => {
     const normalizedSolution = solution.toLowerCase().replace(/\s+/g, ' ').trim()
     const hasClosingDiv = normalizedSolution.includes('</div>')
@@ -255,6 +285,27 @@ function App() {
       setNavigationFeedback('⚠️ You\'re on the right track! Try to include: where you are now, what you can see, your specific goal, and ask for the next step.')
     } else {
       setNavigationFeedback('⚠️ Your prompt needs more detail. Include: current location, what you see on screen, your goal (create Cloud Function), and ask "what should I click next?"')
+    }
+  }
+
+  const checkQuerySolution = (solution: string) => {
+    const normalizedSolution = solution.toLowerCase().trim()
+    const hasSpecificTask = normalizedSolution.includes('search') || normalizedSolution.includes('find') || normalizedSolution.includes('javascript') || normalizedSolution.includes('usestate')
+    const hasFileTypes = normalizedSolution.includes('.js') || normalizedSolution.includes('.jsx') || normalizedSolution.includes('javascript files')
+    const hasOperatingSystem = normalizedSolution.includes('mac') || normalizedSolution.includes('linux') || normalizedSolution.includes('windows') || normalizedSolution.includes('bash')
+    const hasCommandRequest = normalizedSolution.includes('command') || normalizedSolution.includes('terminal') || normalizedSolution.includes('exact') || normalizedSolution.includes('syntax')
+    const hasContext = normalizedSolution.includes('directory') || normalizedSolution.includes('subdirectories') || normalizedSolution.includes('current') || normalizedSolution.includes('recursive')
+    
+    const score = [hasSpecificTask, hasFileTypes, hasOperatingSystem, hasCommandRequest, hasContext].filter(Boolean).length
+    
+    if (score >= 4) {
+      setQueryFeedback('✅ Excellent! Your AI prompt includes all the key elements: specific task, file types, operating system, and clear command request. This will get you the exact syntax you need!')
+    } else if (score >= 3) {
+      setQueryFeedback('✅ Good work! Your prompt has most of the essential elements. Consider adding your operating system and being more specific about file types for better results.')
+    } else if (score >= 2) {
+      setQueryFeedback('⚠️ You\'re on the right track! Try to include: specific task, file types (.js/.jsx), your OS, and ask for exact command syntax.')
+    } else {
+      setQueryFeedback('⚠️ Your prompt needs more detail. Include: what you want to find (useState in JavaScript files), your operating system, and ask for the exact terminal command.')
     }
   }
 
@@ -1030,6 +1081,155 @@ function App() {
                                         <p>• <strong>Efficiency:</strong> No guessing - direct path to your destination</p>
                                         <p>• <strong>Learning:</strong> Understand interface patterns for future navigation</p>
                                         <p>• <strong>Confidence:</strong> Navigate complex tools without fear of getting lost</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                              </Dialog>
+                              <Button 
+                                size="sm" 
+                                onClick={() => {
+                                  if (!completedLessons.includes(lesson.id)) {
+                                    setCompletedLessons([...completedLessons, lesson.id])
+                                  }
+                                }}
+                                className={`${
+                                  completedLessons.includes(lesson.id) 
+                                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600' 
+                                    : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
+                                } text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300`}
+                                disabled={completedLessons.includes(lesson.id)}
+                              >
+                                {completedLessons.includes(lesson.id) ? '✅ Completed' : 'Complete Lesson'}
+                              </Button>
+                            </div>
+                          )}
+                          {lesson.id === 5 && (
+                            <div className="flex gap-2 mt-2">
+                              <Dialog open={lesson5DialogOpen} onOpenChange={setLesson5DialogOpen}>
+                                <DialogTrigger asChild>
+                                  <Button 
+                                    size="sm" 
+                                    className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                                  >
+                                    <Play className="mr-2 h-4 w-4" />
+                                    Start Lesson
+                                  </Button>
+                                </DialogTrigger>
+                              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900 to-slate-800 border-purple-500/30 text-white">
+                                <DialogHeader>
+                                  <DialogTitle className="text-2xl bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                                    Interactive Lesson: {lesson.title}
+                                  </DialogTitle>
+                                </DialogHeader>
+                                
+                                <div className="grid lg:grid-cols-2 gap-6 mt-6">
+                                  <div className="space-y-6">
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-500/30">
+                                      <h3 className="text-lg font-semibold text-blue-400 mb-3">
+                                        {queryExample.title}
+                                      </h3>
+                                      <div className="bg-blue-900/20 rounded p-3 mb-4">
+                                        <p className="text-blue-300 text-sm font-medium mb-2">Scenario:</p>
+                                        <p className="text-blue-200 text-sm mb-3">
+                                          {queryExample.scenario}
+                                        </p>
+                                        <p className="text-blue-300 text-sm font-medium mb-2">Task:</p>
+                                        <p className="text-blue-200 text-sm">
+                                          {queryExample.task}
+                                        </p>
+                                      </div>
+                                      <div className="bg-slate-900/50 rounded p-3">
+                                        <h4 className="text-sm font-medium text-gray-300 mb-2">Good AI Prompt Example:</h4>
+                                        <div className="bg-green-900/20 border border-green-500/30 rounded p-2 mb-3">
+                                          <p className="text-green-200 text-xs font-mono">
+                                            "{queryExample.goodPromptExample}"
+                                          </p>
+                                        </div>
+                                        <h4 className="text-sm font-medium text-gray-300 mb-2">Bad Examples (too vague):</h4>
+                                        <div className="space-y-1">
+                                          {queryExample.badExamples.map((example, index) => (
+                                            <div key={index} className="bg-red-900/20 border border-red-500/30 rounded p-2">
+                                              <p className="text-red-200 text-xs font-mono">"{example}"</p>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-500/30">
+                                      <h3 className="text-lg font-semibold text-cyan-400 mb-3">
+                                        Effective Query Syntax Process
+                                      </h3>
+                                      <ol className="space-y-2">
+                                        {queryExample.steps.map((step, index) => (
+                                          <li key={index} className="text-sm text-gray-300 leading-relaxed">
+                                            {step}
+                                          </li>
+                                        ))}
+                                      </ol>
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="space-y-6">
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-500/30">
+                                      <h3 className="text-lg font-semibold text-purple-400 mb-3">
+                                        Your AI Query Prompt
+                                      </h3>
+                                      <p className="text-sm text-gray-300 mb-4">
+                                        Write an effective AI prompt to get the exact terminal command syntax for the scenario above. Include your task, file types, operating system, and ask for specific commands:
+                                      </p>
+                                      <Textarea
+                                        value={userQuerySolution}
+                                        onChange={(e) => setUserQuerySolution(e.target.value)}
+                                        placeholder="Write your AI prompt here... (e.g., 'I need a terminal command to search for...')"
+                                        className="min-h-[200px] bg-slate-900/50 border-slate-600 text-white placeholder:text-gray-400 font-mono text-sm"
+                                      />
+                                      <div className="flex gap-3 mt-4">
+                                        <Button 
+                                          onClick={() => checkQuerySolution(userQuerySolution)}
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                                        >
+                                          Check Prompt
+                                        </Button>
+                                        <Button 
+                                          variant="outline"
+                                          onClick={() => {
+                                            setUserQuerySolution('')
+                                            setQueryFeedback('')
+                                          }}
+                                          className="border-slate-600 text-gray-300 hover:bg-slate-700"
+                                        >
+                                          Reset
+                                        </Button>
+                                      </div>
+                                      
+                                      {queryFeedback && (
+                                        <div className={`mt-4 p-3 rounded-lg ${
+                                          queryFeedback.startsWith('✅') 
+                                            ? 'bg-green-900/20 border border-green-500/30' 
+                                            : 'bg-yellow-900/20 border border-yellow-500/30'
+                                        }`}>
+                                          <p className={`text-sm ${
+                                            queryFeedback.startsWith('✅') ? 'text-green-300' : 'text-yellow-300'
+                                          }`}>
+                                            {queryFeedback}
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+                                    
+                                    <div className="bg-slate-800/50 rounded-lg p-4 border border-emerald-500/30">
+                                      <h3 className="text-lg font-semibold text-emerald-400 mb-3">
+                                        Why This Approach Works
+                                      </h3>
+                                      <div className="space-y-2 text-sm text-gray-300">
+                                        <p>• <strong>Specificity:</strong> Clear task description gets exact command syntax</p>
+                                        <p>• <strong>Context:</strong> OS and file types ensure compatible commands</p>
+                                        <p>• <strong>Alternatives:</strong> AI can suggest multiple tools and approaches</p>
+                                        <p>• <strong>Learning:</strong> Understand command structure for future use</p>
+                                        <p>• <strong>Efficiency:</strong> Get working commands without trial and error</p>
                                       </div>
                                     </div>
                                   </div>
